@@ -162,7 +162,7 @@ public terrorist_pick(){
 	new players[32],numPlayers,newTerro,name[33];
 	get_players(players, numPlayers);
 	//Pick a random player
-	newTerro = random_num(0,numPlayers);
+	newTerro = players[random(numPlayers)];
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
 		terrorist_pick();
@@ -185,7 +185,7 @@ public terrorist_replace(id){
 	new players[32],numPlayers,newTerro,name[33],name2[33];
 	get_players(players, numPlayers);
 	//Pick a random player
-	newTerro = random_num(0,numPlayers);
+	newTerro = players[random(numPlayers)];
 	get_user_name(id,name2, 32);
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
