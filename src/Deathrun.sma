@@ -18,6 +18,8 @@ new taskid=29482891;
 
 new lastTerrorist;
 
+new bool:b_MapEnded;
+
 //Stock Hud Element
 new HideWeapon;
 
@@ -36,12 +38,15 @@ public plugin_init( ) {
 	register_logevent("event_round_start", 2, "1=Round_Start");
 	register_logevent("event_round_end", 2, "1=Round_End");
 	RegisterHam(Ham_Spawn, "player", "player_spawn", 1);
-	RegisterHam(Ham_Killed, "player", "player_killed", 1);  
+	RegisterHam(Ham_Killed, "player", "player_killed");
 	//Forwards
 	//Get HUD
 	HideWeapon = get_user_msgid("HideWeapon");
 	//Block Commands
 	
+	//Block using buttons during RespawnMode
+	RegisterHam(Ham_Use, "func_button", "button_use")
+
 	//Radio
 	register_clcmd( "radio1", "CmdRadio" );
 	register_clcmd( "radio2", "CmdRadio" );
@@ -77,6 +82,14 @@ public plugin_cfg(){
 	//Set those 2 cvars to not mess up with the gamemode
 	set_cvar_num("mp_autoteambalance", 0);
 	set_cvar_num("mp_limitteams", 0);
+	//Set task to send a message once every 2 mins with info about the RespawnGameMode
+	set_task(120.0, "respawn_message",_,_,_,"b");
+	time_check();
+	b_MapEnded = false;
+}
+
+public plugin_end(){
+	b_MapEnded = true;
 }
 
 //Client connected to the server
@@ -85,7 +98,7 @@ public client_putinserver(id){
 
 public client_disconnected(id){
 	//Replace the terrorist if he disconnects
-	if(b_RespawnMode)
+	if(b_RespawnMode || b_MapEnded)
 		return PLUGIN_CONTINUE;
 	terrorist_check(id);
 	return PLUGIN_CONTINUE;
@@ -104,13 +117,13 @@ public event_round_end(){
 	//Calls time_check function
 	time_check();
 	//Move Players from T to CT
-	new players[32],numPlayers,i;
+	new player, players[32],numPlayers,i;
 	get_players(players, numPlayers);
-	for(i=1;i<=numPlayers;i++){
-		if(!is_user_connected(i))
-			continue;
-		if(cs_get_user_team(i) == CS_TEAM_T){
-			cs_set_user_team(i,CS_TEAM_CT);
+	for( i = 0; i < numPlayers; i++ ) {
+		player = players[ i ];
+		
+		if( cs_get_user_team( player ) == CS_TEAM_T ){
+			cs_set_user_team( player, CS_TEAM_CT );
 		}
 	}
 	if(b_RespawnMode)
@@ -126,8 +139,12 @@ public player_spawn(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 	//Give Items to player if he's not spectator
-	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR)
-		set_task(1.0,"GiveItems",id);
+	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR){		
+		//Remove all the weapons he has
+		fm_strip_user_weapons(id);
+		set_task(0.2,"GiveItems",id);
+	}	
+		
 
 	//Remove Hud
 	message_begin(MSG_ONE_UNRELIABLE, HideWeapon, _, id);
@@ -139,6 +156,8 @@ public player_spawn(id){
 }
 //Player has been killed
 public player_killed(id){
+	if(!is_user_connected(id))
+		return HAM_IGNORED;
 	//Respawn the player if the respawn mode is active nor the respawn time has passed
 	if(b_RespawnMode || b_RespawnActive){
 		if(cs_get_user_team(id) == CS_TEAM_CT){
@@ -184,6 +203,8 @@ public terrorist_pick(){
 public terrorist_replace(id){
 	new players[32],numPlayers,newTerro,name[33],name2[33];
 	get_players(players, numPlayers);
+	if(numPlayers<=1)
+		return PLUGIN_CONTINUE;
 	//Pick a random player
 	newTerro = players[random(numPlayers)];
 	get_user_name(id,name2, 32);
@@ -247,7 +268,7 @@ public time_check(){
 			b_RespawnMode = true;
 			event_round_end();
 			event_round_start();
-		}	
+		}
 	}
 	else{
 		if(10 < str_to_num(data)){
@@ -259,8 +280,6 @@ public time_check(){
 }
 //Give items to player
 public GiveItems(id){
-	//Remove all the weapons he has
-	fm_strip_user_weapons(id);
 	//Checking if he's CT
 	if(cs_get_user_team(id) == CS_TEAM_CT){
 		give_item(id,"weapon_usp");
@@ -311,4 +330,18 @@ public FwdClientKill( const id ) {
 	}
 	
 	return FMRES_IGNORED;
+}
+
+//Block using buttons during Respawn GameMode
+public button_use(iButton, iActivator, iCaller, iUseType, Float:fValue)
+{
+	if(!b_RespawnMode)
+		return HAM_IGNORED;
+
+	return HAM_SUPERCEDE;
+}
+
+//Message containing info about the Respawn GameMode
+public respawn_message(){
+	ColorChat(0, GREEN,"^x04%s^x01 Poti folosi comanda^x03 [/start]^x01 pentru a te reseta la pozitia de start!", serverPrefix);
 }
