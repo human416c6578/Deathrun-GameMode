@@ -343,5 +343,8 @@ public button_use(iButton, iActivator, iCaller, iUseType, Float:fValue)
 
 //Message containing info about the Respawn GameMode
 public respawn_message(){
+	if(!b_RespawnMode)
+		return PLUGIN_CONTINUE;
 	ColorChat(0, GREEN,"^x04%s^x01 Poti folosi comanda^x03 [/start]^x01 pentru a te reseta la pozitia de start!", serverPrefix);
+	return PLUGIN_CONTINUE;
 }
