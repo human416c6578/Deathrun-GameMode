@@ -37,7 +37,7 @@ public plugin_init( ) {
 	//Events
 	register_logevent("event_round_start", 2, "1=Round_Start");
 	register_logevent("event_round_end", 2, "1=Round_End");
-	RegisterHam(Ham_Spawn, "player", "player_spawn", 1);
+	RegisterHam(Ham_Spawn, "player", "player_spawn");
 	RegisterHam(Ham_Killed, "player", "player_killed");
 	//Forwards
 	//Get HUD
@@ -94,6 +94,8 @@ public plugin_end(){
 
 //Client connected to the server
 public client_putinserver(id){
+	if(b_RespawnActive || b_RespawnMode)
+		set_task(2.0, "player_respawn", id);
 }
 
 public client_disconnected(id){
@@ -139,13 +141,9 @@ public player_spawn(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 	//Give Items to player if he's not spectator
-	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR){		
-		//Remove all the weapons he has
-		fm_strip_user_weapons(id);
+	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR){
 		set_task(0.2,"GiveItems",id);
-	}	
-		
-
+	}
 	//Remove Hud
 	message_begin(MSG_ONE_UNRELIABLE, HideWeapon, _, id);
 	write_byte(2 | 16 | 32);
@@ -280,6 +278,8 @@ public time_check(){
 }
 //Give items to player
 public GiveItems(id){
+	//Remove Player Weapons
+	fm_strip_user_weapons(id);
 	//Checking if he's CT
 	if(cs_get_user_team(id) == CS_TEAM_CT){
 		give_item(id,"weapon_usp");
