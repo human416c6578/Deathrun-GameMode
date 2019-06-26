@@ -80,7 +80,7 @@ public plugin_cfg(){
 	//Disable Respawn on new map
 	b_RespawnMode = false;
 	//Pick a terrorist in 5 seconds
-	set_task(5.0, "terrorist_pick");
+	set_task(5.0, "event_round_end");
 	//Set those 2 cvars to not mess up with the gamemode
 	set_cvar_num("mp_autoteambalance", 0);
 	set_cvar_num("mp_limitteams", 0);
