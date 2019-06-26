@@ -42,6 +42,8 @@ public plugin_init( ) {
 	//Forwards
 	//Get HUD
 	HideWeapon = get_user_msgid("HideWeapon");
+	//Reset Hud Event
+	register_event("ResetHUD", "hud_reset", "b");
 	//Block Commands
 	
 	//Block using buttons during RespawnMode
@@ -144,10 +146,6 @@ public player_spawn(id){
 	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR){
 		set_task(0.2,"GiveItems",id);
 	}
-	//Remove Hud
-	message_begin(MSG_ONE_UNRELIABLE, HideWeapon, _, id);
-	write_byte(2 | 16 | 32);
-	message_end();
 
 	return PLUGIN_CONTINUE;
 	
@@ -172,6 +170,14 @@ public player_respawn(id){
 		ExecuteHamB(Ham_CS_RoundRespawn, id);
 	}
 	return HAM_IGNORED;
+}
+
+//Hud Reset Event
+public hud_reset(id){
+	//Remove Hud
+	message_begin(MSG_ONE_UNRELIABLE, HideWeapon, _, id);
+	write_byte(2 | 16 | 32);
+	message_end();
 }
 
 //Choose a random terrorist at round end
