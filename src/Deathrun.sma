@@ -72,6 +72,9 @@ public plugin_init( ) {
 
 	//Terro Kill
 	register_forward( FM_ClientKill,"FwdClientKill" );
+
+	//Terro WIN
+	register_logevent("terrorist_won" , 6, "3=Terrorists_Win", "3=Target_Bombed") 
 }
 
 //Game Functions
@@ -122,13 +125,10 @@ public event_round_end(){
 	time_check();
 	//Move Players from T to CT
 	new player, players[32],numPlayers,i;
-	get_players(players, numPlayers);
+	get_players(players, numPlayers,"ce","TERRORIST");
 	for( i = 0; i < numPlayers; i++ ) {
 		player = players[ i ];
-		
-		if( cs_get_user_team( player ) == CS_TEAM_T ){
-			cs_set_user_team( player, CS_TEAM_CT );
-		}
+		cs_set_user_team( player, CS_TEAM_CT );
 	}
 	if(b_RespawnMode)
 		return PLUGIN_CONTINUE;
@@ -252,6 +252,15 @@ public terrorist_check(id){
 		terrorist_replace(id);
 	return PLUGIN_CONTINUE;
 }
+//Give Terro 3 points when his team won
+public terrorist_won(){
+	new player, players[32],numPlayers,i;
+	get_players(players, numPlayers, "ae", "TERRORIST");
+	for( i = 0; i < numPlayers; i++ ) {
+		player = players[ i ];
+		set_user_frags(player, get_user_frags(player)+3);
+	}
+}
 //Toggle the gamemode between deathrun and respawn
 public gamemode_toggle(){
 	b_RespawnMode= !b_RespawnMode;
@@ -344,7 +353,7 @@ public button_use(iButton, iActivator, iCaller, iUseType, Float:fValue)
 	if(!b_RespawnMode)
 		return HAM_IGNORED;
 
-	return HAM_SUPERCEDE;
+	return HAM_IGNORED;
 }
 
 //Message containing info about the Respawn GameMode
