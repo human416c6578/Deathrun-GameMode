@@ -5,7 +5,8 @@
 #include <fakemeta_util>
 #include <cstrike>
 #include <fun>
-#include <colorchat>
+#include <cromchat>
+
 //Prefix for chat messages
 new serverPrefix[] = "(Deathrun Usp)";
 //bools for respawn gamemode
@@ -47,7 +48,7 @@ public plugin_init( ) {
 	//Block Commands
 	
 	//Block using buttons during RespawnMode
-	RegisterHam(Ham_Use, "func_button", "button_use")
+	//RegisterHam(Ham_Use, "func_button", "button_use")
 
 	//Radio
 	register_clcmd( "radio1", "CmdRadio" );
@@ -276,15 +277,16 @@ public respawn_disable(){
 public time_check(){
 	new data[3];
 	get_time("%H", data, 2);
+	//client_print(0, print_chat, "Time is %d", str_to_num(data));
 	if(!b_RespawnMode){
-		if(10 > str_to_num(data) >= 0){
+		if(str_to_num(data)<10){
 			b_RespawnMode = true;
 			event_round_end();
 			event_round_start();
 		}
 	}
 	else{
-		if(10 < str_to_num(data)){
+		if(str_to_num(data)>10){
 			b_RespawnMode = false;
 			event_round_end();
 			event_round_start();
