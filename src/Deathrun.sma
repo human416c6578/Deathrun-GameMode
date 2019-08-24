@@ -8,7 +8,7 @@
 #include <cromchat>
 
 //Prefix for chat messages
-new serverPrefix[] = "(Deathrun Usp)";
+new serverPrefix[] = "[USP]";
 //bools for respawn gamemode
 new bool:b_RespawnMode;
 new bool:b_RespawnActive;
@@ -186,7 +186,7 @@ public terrorist_pick(){
 	new players[32],numPlayers,newTerro,name[33];
 	get_players(players, numPlayers);
 	//Pick a random player
-	newTerro = players[random(numPlayers)];
+	newTerro = players[random(numPlayers-1)];
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
 		terrorist_pick();
@@ -295,6 +295,8 @@ public time_check(){
 }
 //Give items to player
 public GiveItems(id){
+	if(!is_user_connected(id))
+		return PLUGIN_CONTINUE;
 	//Remove Player Weapons
 	fm_strip_user_weapons(id);
 	//Checking if he's CT
@@ -304,6 +306,7 @@ public GiveItems(id){
 		give_item(id,"ammo_45acp");
 	}
 	give_item(id, "weapon_knife");
+	return PLUGIN_CONTINUE;
 }
 
 //Block Commands
