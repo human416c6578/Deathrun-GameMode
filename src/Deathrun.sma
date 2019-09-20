@@ -21,6 +21,8 @@ new lastTerrorist;
 
 new bool:b_MapEnded;
 
+new bool:b_ManualToggled;
+
 //Stock Hud Element
 new HideWeapon;
 
@@ -92,6 +94,7 @@ public plugin_cfg(){
 	set_task(120.0, "respawn_message",_,_,_,"b");
 	time_check();
 	b_MapEnded = false;
+	b_ManualToggled = false;
 }
 
 public plugin_end(){
@@ -184,14 +187,14 @@ public hud_reset(id){
 //Choose a random terrorist at round end
 public terrorist_pick(){
 	new players[32],numPlayers,newTerro,name[33];
-	get_players(players, numPlayers);
+	get_players(players, numPlayers, "e", "CT");
 	//Pick a random player
-	newTerro = players[random(numPlayers-1)];
+	newTerro = players[random_num(1,numPlayers-1)];
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
 		terrorist_pick();
 	//Checks if he isn't the terrorist from the last round and that he's a CT
-	if(newTerro != lastTerrorist && cs_get_user_team(newTerro) == CS_TEAM_CT){
+	if(newTerro != lastTerrorist){
 		get_user_name(newTerro, name,32);
 		cs_set_user_team(newTerro, CS_TEAM_T);
 		lastTerrorist = newTerro;
@@ -207,30 +210,24 @@ public terrorist_pick(){
 //Replace the terrorist
 public terrorist_replace(id){
 	new players[32],numPlayers,newTerro,name[33],name2[33];
-	get_players(players, numPlayers);
+	get_players(players, numPlayers, "e", "CT");
 	if(numPlayers<=1)
 		return PLUGIN_CONTINUE;
 	//Pick a random player
-	newTerro = players[random(numPlayers)];
+	newTerro = players[random_num(1,numPlayers-1)];
 	get_user_name(id,name2, 32);
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
 		terrorist_replace(id);
-	//Checks if he's a CT
-	if(cs_get_user_team(newTerro)==CS_TEAM_CT){
-		get_user_name(newTerro, name,32);
-		//Move him to the Terrorists
-		cs_set_user_team(newTerro, CS_TEAM_T);
-		//Sets him as the last terrorist
-		lastTerrorist = newTerro;
-		ColorChat(0, GREEN,"^x04%s^x03 %s^x01 este noul terorist, deoarece^x03 %s^x01 s-a deconectat.", serverPrefix, name, name2);
-		//Respawns him
-		ExecuteHamB(Ham_CS_RoundRespawn, newTerro);
-	}
-	//If the new Terrorist is not CT the function is called again
-	else{
-		terrorist_replace(id);
-	}
+
+	get_user_name(newTerro, name,32);
+	//Move him to the Terrorists
+	cs_set_user_team(newTerro, CS_TEAM_T);
+	//Sets him as the last terrorist
+	lastTerrorist = newTerro;
+	ColorChat(0, GREEN,"^x04%s^x03 %s^x01 este noul terorist, deoarece^x03 %s^x01 s-a deconectat.", serverPrefix, name, name2);
+	//Respawns him
+	ExecuteHamB(Ham_CS_RoundRespawn, newTerro);
 	
 	return PLUGIN_CONTINUE;
 }
@@ -263,9 +260,20 @@ public terrorist_won(){
 	}
 }
 //Toggle the gamemode between deathrun and respawn
-public gamemode_toggle(){
-	b_RespawnMode= !b_RespawnMode;
+public gamemode_toggle(id){
+	if(!(get_user_flags(id) & ADMIN_IMMUNITY))
+		return PLUGIN_HANDLED;
+	b_ManualToggled = !b_ManualToggled;
+	b_RespawnMode = !b_RespawnMode;
 	event_round_end();
+
+	ColorChat(0, GREEN,"^x04%s^x01 Gamemode-ul a fost schimbat manual!", serverPrefix);
+	if(b_RespawnMode)
+		ColorChat(0, GREEN,"^x04%s^x01 Gamemode-ul current este^x04 RESPAWN!", serverPrefix);
+	else
+		ColorChat(0, GREEN,"^x04%s^x01 Gamemode-ul current este^x04 DEATHRUN!", serverPrefix);
+
+	return PLUGIN_HANDLED;
 }
 //Disable the respawn
 public respawn_disable(){
@@ -275,6 +283,8 @@ public respawn_disable(){
 }
 //Check the time , if it's between 00:00AM and 10:00AM, then the RESPAWN gamemode will activate
 public time_check(){
+	if(b_ManualToggled)
+		return PLUGIN_CONTINUE;
 	new data[3];
 	get_time("%H", data, 2);
 	//client_print(0, print_chat, "Time is %d", str_to_num(data));
@@ -292,6 +302,7 @@ public time_check(){
 			event_round_start();
 		}
 	}
+	return PLUGIN_CONTINUE;
 }
 //Give items to player
 public GiveItems(id){
