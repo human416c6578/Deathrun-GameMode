@@ -191,8 +191,11 @@ public terrorist_pick(){
 	//Pick a random player
 	newTerro = players[random_num(1,numPlayers-1)];
 	//Checks if he's connected
-	if(!is_user_connected(newTerro))
-		terrorist_pick();
+	if(!is_user_connected(newTerro)){
+		set_task(0.2,"terrorist_pick");
+		return PLUGIN_CONTINUE;
+	}
+		
 	//Checks if he isn't the terrorist from the last round and that he's a CT
 	if(newTerro != lastTerrorist){
 		get_user_name(newTerro, name,32);
@@ -202,7 +205,7 @@ public terrorist_pick(){
 	}
 	//If the condition doesn't apply to the new terro the function is called again
 	else{
-		terrorist_pick();
+		set_task(0.2,"terrorist_pick");
 	}
 	
 	return PLUGIN_CONTINUE;
@@ -218,7 +221,7 @@ public terrorist_replace(id){
 	get_user_name(id,name2, 32);
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
-		terrorist_replace(id);
+		set_task(0.2,"terrorist_replace");
 
 	get_user_name(newTerro, name,32);
 	//Move him to the Terrorists
