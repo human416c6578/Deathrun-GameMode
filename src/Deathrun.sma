@@ -35,6 +35,10 @@ public plugin_init( ) {
 	//Commands
 	//Command to respawn the player when the respawn mode is activated
 	register_clcmd("say /start","player_respawn");
+	//Command to respawn the player when the respawn mode is activated
+	register_clcmd("say /ct","player_switchteam");
+	//Command to respawn the player when the respawn mode is activated
+	register_clcmd("say /spec","player_switchteam");
 	//Command to toggle the gamemode
 	register_clcmd("deathrun_toggle","gamemode_toggle");
 	//Events
@@ -50,12 +54,22 @@ public plugin_init( ) {
 	//Block Commands
 	
 	//Block using buttons during RespawnMode
-	//RegisterHam(Ham_Use, "func_button", "button_use")
+	if( engfunc(EngFunc_FindEntityByString,-1 ,"classname", "func_button"))
+		RegisterHam(Ham_Use, "func_button", "fwButtonUsed");
+
+	if(engfunc(EngFunc_FindEntityByString,-1 ,"classname","func_rot_button"))
+		RegisterHam(Ham_Use, "func_rot_button", "fwButtonUsed");
+		
+	if(engfunc(EngFunc_FindEntityByString,-1 ,"classname", "button_target"))
+		RegisterHam(Ham_Use, "button_target", "fwButtonUsed");
 
 	//Radio
 	register_clcmd( "radio1", "CmdRadio" );
 	register_clcmd( "radio2", "CmdRadio" );
 	register_clcmd( "radio3", "CmdRadio" );
+
+	//Jointeam
+	register_clcmd( "jointeam", "CmdRadio" );
 
 	//Spray
 	register_impulse( 201, "FwdImpulse_201" );
@@ -85,8 +99,8 @@ public plugin_init( ) {
 public plugin_cfg(){
 	//Disable Respawn on new map
 	b_RespawnMode = false;
-	//Pick a terrorist in 5 seconds
-	set_task(5.0, "event_round_end");
+	//Restart round in 6 seconds
+	set_task(6.0, "round_restart");
 	//Set those 2 cvars to not mess up with the gamemode
 	set_cvar_num("mp_autoteambalance", 0);
 	set_cvar_num("mp_limitteams", 0);
@@ -142,6 +156,12 @@ public event_round_end(){
 	remove_task(taskid);
 	return PLUGIN_CONTINUE;
 }
+//Round Restart
+public round_restart(){
+	set_cvar_num("sv_restart", 1);
+	event_round_end();
+	event_round_start();
+}
 //Player has spawned
 public player_spawn(id){
 	if(!is_user_connected(id))
@@ -165,6 +185,7 @@ public player_killed(id){
 			return HAM_SUPERCEDE;
 		}
 	}
+
 	return HAM_IGNORED;
 }
 
@@ -174,6 +195,21 @@ public player_respawn(id){
 		ExecuteHamB(Ham_CS_RoundRespawn, id);
 	}
 	return HAM_IGNORED;
+}
+
+public player_switchteam(id)
+{
+	if(!b_RespawnMode)
+		return;
+	if (cs_get_user_team(id) == CS_TEAM_SPECTATOR){
+		cs_set_user_team(id, CS_TEAM_CT, CS_DONTCHANGE);
+		cs_user_spawn(id);
+	}
+	else{
+		cs_set_user_team(id, CS_TEAM_SPECTATOR, CS_DONTCHANGE);
+		user_silentkill(id);
+	}
+	return;
 }
 
 //Hud Reset Event
@@ -188,11 +224,13 @@ public hud_reset(id){
 public terrorist_pick(){
 	new players[32],numPlayers,newTerro,name[33];
 	get_players(players, numPlayers, "e", "CT");
+	if(numPlayers<=2)
+		return PLUGIN_CONTINUE;
 	//Pick a random player
 	newTerro = players[random_num(1,numPlayers-1)];
 	//Checks if he's connected
 	if(!is_user_connected(newTerro)){
-		set_task(0.2,"terrorist_pick");
+		set_task(0.1,"terrorist_pick");
 		return PLUGIN_CONTINUE;
 	}
 		
@@ -205,7 +243,8 @@ public terrorist_pick(){
 	}
 	//If the condition doesn't apply to the new terro the function is called again
 	else{
-		set_task(0.2,"terrorist_pick");
+		set_task(0.1,"terrorist_pick");
+		return PLUGIN_CONTINUE;
 	}
 	
 	return PLUGIN_CONTINUE;
@@ -221,7 +260,7 @@ public terrorist_replace(id){
 	get_user_name(id,name2, 32);
 	//Checks if he's connected
 	if(!is_user_connected(newTerro))
-		set_task(0.2,"terrorist_replace");
+		set_task(0.1,"terrorist_replace");
 
 	get_user_name(newTerro, name,32);
 	//Move him to the Terrorists
@@ -281,28 +320,36 @@ public gamemode_toggle(id){
 //Disable the respawn
 public respawn_disable(){
 	b_RespawnActive = false;
-	if(!b_RespawnMode)
+	if(!b_RespawnMode){
 		ColorChat(0, GREEN,"^x04%s^x01 Timpul de respawn s-a terminat!", serverPrefix);
+		remove_task(taskid);
+	}
+		
+
 }
-//Check the time , if it's between 00:00AM and 10:00AM, then the RESPAWN gamemode will activate
+//Check the time , if it's between 10:00PM and 10:00AM, then the RESPAWN gamemode will activate
 public time_check(){
 	if(b_ManualToggled)
 		return PLUGIN_CONTINUE;
-	new data[3];
+	new data[3], timeleft;
+	timeleft = get_timeleft();
 	get_time("%H", data, 2);
 	//client_print(0, print_chat, "Time is %d", str_to_num(data));
 	if(!b_RespawnMode){
-		if(str_to_num(data)<10){
+		if(str_to_num(data) > 21 || str_to_num(data) < 10){
 			b_RespawnMode = true;
 			event_round_end();
 			event_round_start();
+			if(timeleft>20)
+				set_cvar_num("mp_timelimit", 20);
 		}
 	}
 	else{
-		if(str_to_num(data)>10){
+		if(str_to_num(data) < 22 && str_to_num(data) > 10){
 			b_RespawnMode = false;
 			event_round_end();
 			event_round_start();
+			set_cvar_num("mp_timelimit", 30);
 		}
 	}
 	return PLUGIN_CONTINUE;
@@ -381,4 +428,23 @@ public respawn_message(){
 		return PLUGIN_CONTINUE;
 	ColorChat(0, GREEN,"^x04%s^x01 Poti folosi comanda^x03 [/start]^x01 pentru a te reseta la pozitia de start!", serverPrefix);
 	return PLUGIN_CONTINUE;
+}
+
+//Dezactivate buttons
+public fwButtonUsed(this, idcaller, idactivator, use_type, Float:value){
+	if(idcaller!=idactivator) return HAM_IGNORED;
+	
+	if(pev(this, pev_frame) > 0.0)
+		 return HAM_IGNORED;
+	new index=get_ent_index(this);
+	if(index==-1) 
+		return HAM_IGNORED;
+	if(b_RespawnMode){
+			return HAM_SUPERCEDE;
+	}
+	return HAM_IGNORED;
+}
+
+get_ent_index(ent){
+	return pev(ent, pev_iuser4)-1;
 }
