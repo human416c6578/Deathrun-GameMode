@@ -51,6 +51,8 @@ public plugin_init( ) {
 	respawnTime = register_cvar("respawn_time","30.0");
 	//Commands
 	//Command to display info about lives
+	register_clcmd("say /usp","give_usp");
+	//Command to display info about lives
 	register_clcmd("say /lives","life_diplay");
 	//Command to respawn the player using a life
 	register_clcmd("say /revive","life_use");
@@ -291,6 +293,18 @@ public player_hurt(id, inflictor, attacker, Float:damage, damagebits){
 	return HAM_IGNORED;
 }
 
+public give_usp(id){
+	if(!is_user_connected(id) || !is_user_alive(id))
+		return PLUGIN_CONTINUE;
+
+	fm_strip_user_gun(id, CSW_USP);
+	give_item(id,"weapon_usp");
+	give_item(id,"ammo_45acp");
+	give_item(id,"ammo_45acp");
+	give_item(id, "weapon_knife");
+	return PLUGIN_CONTINUE;
+}
+
 //Function to display info about lives
 public life_diplay(id){
 	ColorChat(id, GREEN,"^x04%s^x01 Ai ^x03%d ^x01vieti, foloseste comanda ^x03/revive ^x01pentru a le folosi.", serverPrefix, lives[id]);
@@ -523,8 +537,8 @@ public GAMEMODE_VOTE_START(){
 public GAMEMODE_VOTE_MENU(id){
 	g_voteMenu = menu_create( "\rChoose the map gamemode!:", "GAMEMODE_VOTE_HANDLER" );
 
-	menu_additem( g_voteMenu, "Deathrun", "", 0 );
-	menu_additem( g_voteMenu, "Respawn", "", 0 );
+	menu_additem( g_voteMenu, "\yClassic", "", 0 );
+	menu_additem( g_voteMenu, "\rNo \yTerrorist", "", 0 );
 
 	menu_display( id, g_voteMenu, 0 );
 }
