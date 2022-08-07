@@ -336,7 +336,7 @@ public life_use(id){
 
 //Function to respawn the players that's calling it
 public player_respawn(id){
-	if(b_RespawnMode && !is_user_bot(id)){
+	if(b_RespawnMode && !is_user_bot(id) && cs_get_user_team(id) == CS_TEAM_CT && !is_user_alive(id)){
 		ExecuteHamB(Ham_CS_RoundRespawn, id);
 	}
 	return HAM_IGNORED;
