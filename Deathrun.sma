@@ -596,7 +596,7 @@ public GAMEMODE_VOTE_PROGRESS(){
 	for ( new i; i < pnum; i++ )
 	{
 		tempid = players[i];
-		ShowSyncHudMsg(tempid, hud_progress, "DEATHRUN %d Voturi^nRESPAWN %d Voturi^n^nTimp de vot %d secunde", g_votes[0], g_votes[1], floatround(vote_time));
+		ShowSyncHudMsg(tempid, hud_progress, "Classic %d Voturi^nNo Terrorist%d Voturi^n^nTimp de vot ramas %d secunde", g_votes[0], g_votes[1], floatround(vote_time));
 	}
 }
 
