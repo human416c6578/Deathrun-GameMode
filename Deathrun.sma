@@ -57,12 +57,14 @@ public plugin_init( ) {
 	//Command to respawn the player using a life
 	register_clcmd("say /revive","life_use");
 	//Command to respawn the player when the respawn mode is activated
-	register_clcmd("say /start","player_respawn");
+	//register_clcmd("say /start","player_respawn");
 	
 	//Command to switch team to spectator/ct
 	register_clcmd("say /ct","player_switchteam");
 	//Command to switch team to spectator/ct
 	register_clcmd("say /spec","player_switchteam");
+	//Command to start the gamemode vote
+	register_clcmd("deathrun_vote", "gamemode_vote_cmd");
 	//Command to toggle the gamemode
 	register_clcmd("deathrun_toggle","gamemode_toggle");
 	//Events
@@ -129,13 +131,23 @@ public plugin_natives()
 
 	register_native("get_bool_respawn", "get_bool_respawn_native");
 
+	register_native("is_respawn_active", "is_respawn_active_native");
+
 	register_native("tempRespawn_disable", "tempRespawn_disable_native");
 
 	register_native("set_next_terrorist", "set_next_terrorist_native");
+
+	register_native("get_player_lives", "get_player_lives_native");
+
+	register_native("set_player_lives", "set_player_lives_native");
 }
 
 public bool:get_bool_respawn_native(numParams){
 	return b_RespawnMode;
+}
+
+public bool:is_respawn_active_native(){
+	return b_RespawnActive || b_RespawnMode;
 }
 
 public tempRespawn_disable_native(){
@@ -148,6 +160,18 @@ public set_next_terrorist_native(numParams){
 		return terro_next;
 	terro_next = id;
 	return 0;
+}
+
+public get_player_lives_native(numParams){
+	new id = get_param(1);
+	return lives[id];
+}
+
+public set_player_lives_native(numParams){
+	new id = get_param(1);
+	new value = get_param(2);
+
+	lives[id] = value;
 }
 
 //Game Functions
@@ -188,12 +212,13 @@ public client_putinserver(id){
 	new players[MAX_PLAYERS], iNum;
 	get_players(players, iNum, "ch");
 
+	/*
 	if(iNum>4 && b_RespawnMode && !g_bVoted)
 	{
 		g_bVoted = true;
 		GAMEMODE_VOTE_START();
 	}
-		
+	*/
 }
 
 public client_disconnected(id){
@@ -201,6 +226,7 @@ public client_disconnected(id){
 	if(b_RespawnMode || b_MapEnded)
 		return PLUGIN_CONTINUE;
 	terrorist_check(id);
+	kill_bots();
 	return PLUGIN_CONTINUE;
 }
 
@@ -248,10 +274,13 @@ public player_spawn(id){
 		return PLUGIN_CONTINUE;
 	//Give Items to player if he's not spectator
 	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR){
-		set_task(0.2,"GiveItems",id);
+		if(!b_RespawnMode)
+			set_task(0.1,"GiveItems", id);
+		else
+			GiveItems(id);
 	}
 
-	set_task(0.5,"GetUserHealth",id);
+	set_task(0.5,"GetUserHealth", id);
 
 	return PLUGIN_CONTINUE;
 	
@@ -269,6 +298,7 @@ public player_killed(id, attacker){
 		}
 		
 	}
+
 	//Respawn the player if the respawn mode is active nor the respawn time has passed
 	if(b_RespawnMode || b_RespawnActive){
 		if(cs_get_user_team(id) == CS_TEAM_CT && !is_user_bot(id)){
@@ -276,6 +306,8 @@ public player_killed(id, attacker){
 			return HAM_SUPERCEDE;
 		}
 	}
+	
+	kill_bots();
 
 	return HAM_IGNORED;
 }
@@ -283,6 +315,10 @@ public player_killed(id, attacker){
 public player_hurt(id, inflictor, attacker, Float:damage, damagebits){
 	static Float:multiplier;
 	static Float:newDamage;
+
+	if(get_user_health(id) > 250 && cs_get_user_team(id) == CS_TEAM_CT)
+		set_user_health(id, 250);
+
 	if(!is_user_connected(attacker)){
 		multiplier = g_StartHealth[id]/100.0;
 		newDamage = damage * multiplier;
@@ -336,15 +372,16 @@ public life_use(id){
 
 //Function to respawn the players that's calling it
 public player_respawn(id){
-	if(b_RespawnMode && !is_user_bot(id) && cs_get_user_team(id) == CS_TEAM_CT){
+	if(!is_user_connected(id) || is_user_bot(id)) return PLUGIN_HANDLED;
+	if(b_RespawnMode && cs_get_user_team(id) == CS_TEAM_CT){
 		ExecuteHamB(Ham_CS_RoundRespawn, id);
 	}
-	return HAM_IGNORED;
+	return PLUGIN_HANDLED;
 }
 
 public player_death(id){
 	user_silentkill(id);
-	return HAM_IGNORED;
+	return PLUGIN_HANDLED;
 }
 
 public player_switchteam(id)
@@ -380,7 +417,7 @@ public terrorist_pick(){
 		terro_next = 0;
 		return PLUGIN_CONTINUE;
 	}
-	get_players(players, numPlayers, "e", "CT");
+	get_players(players, numPlayers, "ce", "CT");
 	if(numPlayers<2)
 		return PLUGIN_CONTINUE;
 	//Pick a random player
@@ -409,7 +446,7 @@ public terrorist_pick(){
 //Replace the terrorist
 public terrorist_replace(id){
 	new players[32],numPlayers,newTerro,name[33],name2[33];
-	get_players(players, numPlayers, "e", "CT");
+	get_players(players, numPlayers, "ce", "CT");
 	if(numPlayers<=1)
 		return PLUGIN_CONTINUE;
 	//Pick a random player
@@ -508,6 +545,14 @@ public time_check(){
 	return PLUGIN_CONTINUE;
 }
 
+public gamemode_vote_cmd(id){
+	if(!(get_user_flags(id) & ADMIN_IMMUNITY)) return PLUGIN_HANDLED;
+
+	GAMEMODE_VOTE_START();
+
+	return PLUGIN_HANDLED;
+}
+
 public GAMEMODE_VOTE_START(){
 	if(g_bVoting == true)
 		return PLUGIN_CONTINUE;
@@ -535,12 +580,16 @@ public GAMEMODE_VOTE_START(){
 }
 
 public GAMEMODE_VOTE_MENU(id){
+	if(!is_user_connected(id))
+		return PLUGIN_HANDLED;
 	g_voteMenu = menu_create( "\rChoose the map gamemode!:", "GAMEMODE_VOTE_HANDLER" );
 
 	menu_additem( g_voteMenu, "\yClassic", "", 0 );
 	menu_additem( g_voteMenu, "\rNo \yTerrorist", "", 0 );
 
 	menu_display( id, g_voteMenu, 0 );
+
+	return PLUGIN_HANDLED;
 }
 
 public GAMEMODE_VOTE_HANDLER(id, menu, item){
@@ -643,14 +692,18 @@ public GiveItems(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 	//Remove Player Weapons
-	fm_strip_user_weapons(id);
+	if(!b_RespawnMode)
+		fm_strip_user_weapons(id);
+
+	give_item(id, "weapon_knife");
+
 	//Checking if he's CT
 	if(cs_get_user_team(id) == CS_TEAM_CT){
 		give_item(id,"weapon_usp");
 		give_item(id,"ammo_45acp");
 		give_item(id,"ammo_45acp");
 	}
-	give_item(id, "weapon_knife");
+	
 	return PLUGIN_CONTINUE;
 }
 
@@ -734,14 +787,24 @@ get_ent_index(ent){
 }
 
 public checkCTAlive(){
-	new playersAlive;
-	for(new i;i<=33;i++)
-		if(is_user_alive(i) && cs_get_user_team(i) == CS_TEAM_CT)
-			playersAlive++;
-	return playersAlive;
+	new players[MAX_PLAYERS], iCtAlive;
+	get_players(players, iCtAlive, "aceh", "CT");
+	
+	return iCtAlive;
 }
 
 public RemoveOffer(id)
 {	
 	client_cmd( id, "slot10;slot1" )
+}
+
+public kill_bots(){
+	if(checkCTAlive() > 0) return PLUGIN_CONTINUE;
+	new players[MAX_PLAYERS], iBotsAlive;
+	get_players(players, iBotsAlive, "adeh", "CT");
+
+	for(new i;i<iBotsAlive;i++)
+		user_silentkill(players[i]);
+
+	return PLUGIN_CONTINUE;
 }
