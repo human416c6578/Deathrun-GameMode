@@ -47,4 +47,4 @@ At the onset of each map, players have the opportunity to cast their votes for t
 
 ## Support and Issues
 
-For support or reporting issues, please visit the [issue tracker](https://github.com/human416c6578/deathrun/issues).
+For support or reporting issues, please visit the [issue tracker](https://github.com/human416c6578/Deathrun-GameMode/issues).
