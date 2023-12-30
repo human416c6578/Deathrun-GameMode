@@ -11,11 +11,12 @@
 native isPlayerVip(id);
 forward timer_player_category_changed(id);
 
+new const Float:VEC_DUCK_HULL_MIN[3] = { -16.0, -16.0, -18.0 };
+new const Float:VEC_DUCK_HULL_MAX[3] = { 16.0, 16.0, 18.0 };
+
 new start_position[33][3];
 new Float:start_angles[33][3];
 new Float:start_velocity[33][3];
-
-new const Float:zero[3];
 
 new vip_lives[33];
 
@@ -36,9 +37,7 @@ public plugin_init()
 }
 
 public client_putinserver(id){
-	start_position[id] 		= zero;
-	start_angles[id] 		= zero;
-	start_velocity[id] 		= zero;
+	start_position[id][0] = 0;
 
 	used[id] = false;
 
@@ -52,9 +51,7 @@ public event_round_start(){
 		if(isPlayerVip(i))
 			vip_lives[i] = 2;
 
-		start_position[i] 		= zero;
-		start_angles[i] 		= zero;
-		start_velocity[i] 		= zero;
+		start_position[i][0] = 0;
 
 		used[i] = false;
 	}
@@ -66,7 +63,8 @@ public player_spawn(id){
 }
 
 public timer_player_category_changed(id){
-	start_position[id] = zero;
+	start_position[id][0] = 0;
+	used[id] = false;
 }
 
 public Start(id){
@@ -81,9 +79,11 @@ public Start(id){
 
 	if(!start_position[id][0]) return PLUGIN_CONTINUE;
 
-	set_pev( id, pev_origin, start_position[id]);
-	SetUserAgl( id, start_angles[id]);
-	set_pev( id, pev_velocity, start_velocity[id]);
+	set_pev( id, pev_flags, pev( id, pev_flags ) | FL_DUCKING );
+	engfunc( EngFunc_SetSize, id, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX )
+	set_pev(id, pev_origin, start_position[id]);
+	SetUserAgl(id, start_angles[id]);
+	set_pev(id, pev_velocity, start_velocity[id]);
 
 	used[id] = true;
 
@@ -108,9 +108,17 @@ public SaveStart(id){
 public ResetStart(id){
 	used[id] = false;
 
-	start_position[id] 		= zero;
-	start_angles[id] 		= zero;
-	start_velocity[id] 		= zero;
+	start_position[id][0] = 0;
+	start_position[id][1] = 0;
+	start_position[id][2] = 0;
+
+	start_angles[id][0] = 0.0;
+	start_angles[id][1] = 0.0;
+	start_angles[id][2] = 0.0;
+
+	start_velocity[id][0] = 0.0;
+	start_velocity[id][1] = 0.0;
+	start_velocity[id][2] = 0.0;
 
 	set_pev( id, pev_velocity, start_velocity[id]);
 }

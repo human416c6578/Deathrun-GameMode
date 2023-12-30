@@ -7,6 +7,15 @@
 #include <fun>
 #include <cromchat>
 
+enum ( <<=1 )
+{
+    CheckPrimary = 1,
+    CheckSecondary,
+    CheckKnife,
+    CheckNades,
+    CheckC4
+}
+
 //Prefix for chat messages
 new serverPrefix[] = "[DR]";
 //bools for respawn gamemode
@@ -36,12 +45,12 @@ new g_voteMenu;
 //vote progress display
 new hud_progress;
 new hud_progress_taskid = 9123132;
-new Float:vote_time = 20.0;
+new Float:vote_time = 15.0;
 new bool:g_bVoting;
 new bool:g_bVoted;
 
 new g_StartHealth[33];
-new Float:g_DamageTaken[33];
+new g_bNewRound[33];
 
 public plugin_init( ) {
 	register_plugin( "Deathrun GameMode", "1.0", "MrShark45" );
@@ -137,6 +146,8 @@ public plugin_natives()
 
 	register_native("set_next_terrorist", "set_next_terrorist_native");
 
+	register_native("get_next_terrorist", "get_next_terrorist_native");
+
 	register_native("get_player_lives", "get_player_lives_native");
 
 	register_native("set_player_lives", "set_player_lives_native");
@@ -156,9 +167,12 @@ public tempRespawn_disable_native(){
 
 public set_next_terrorist_native(numParams){
 	new id = get_param(1);
+	terro_next = id;
+}
+
+public get_next_terrorist_native(){
 	if(is_user_connected(terro_next))
 		return terro_next;
-	terro_next = id;
 	return 0;
 }
 
@@ -187,8 +201,9 @@ public plugin_cfg(){
 	set_cvar_num("mp_limitteams", 0);
 	//Set task to send a message once every 2 mins with info about the RespawnGameMode
 	set_task(120.0, "respawn_message",_,_,_,"b");
-	set_task(20.0, "players_check");
-	set_task(20.0, "time_check");
+	set_task(2.0, "kill_bots",_,_,_,"b");
+	set_task(10.0, "players_check");
+	set_task(10.0, "time_check");
 	b_MapEnded = false;
 	b_ManualToggled = false;
 }
@@ -226,7 +241,7 @@ public client_disconnected(id){
 	if(b_RespawnMode || b_MapEnded)
 		return PLUGIN_CONTINUE;
 	terrorist_check(id);
-	kill_bots();
+
 	return PLUGIN_CONTINUE;
 }
 
@@ -238,8 +253,10 @@ public event_round_start(){
 	//Create Task to disable respawn after x seconds
 	set_task(get_pcvar_float(respawnTime), "respawn_disable", taskid);
 
-	for(new i;i<33;i++)
-		g_DamageTaken[i] = 0.0;
+	for(new i = 0;i<33;i++) {
+		g_bNewRound[i] = true;
+	}
+		
 }
 //Round End
 public event_round_end(){
@@ -274,10 +291,12 @@ public player_spawn(id){
 		return PLUGIN_CONTINUE;
 	//Give Items to player if he's not spectator
 	if(cs_get_user_team(id) != CS_TEAM_SPECTATOR){
-		if(!b_RespawnMode)
-			set_task(0.1,"GiveItems", id);
-		else
-			GiveItems(id);
+		// On some maps players are stripped of weapons after a certain time
+		// It doesn't matter that we call this function multiple times
+		// If the player already has a pistol the function will return
+		GiveItems(id);
+		set_task(0.1,"GiveItems", id);
+		set_task(0.5,"GiveItems", id);
 	}
 
 	set_task(0.5,"GetUserHealth", id);
@@ -306,8 +325,6 @@ public player_killed(id, attacker){
 			return HAM_SUPERCEDE;
 		}
 	}
-	
-	kill_bots();
 
 	return HAM_IGNORED;
 }
@@ -349,7 +366,7 @@ public life_diplay(id){
 //Function to respawn a player when he uses a life
 public life_use(id){
 	if(cs_get_user_team(id) == CS_TEAM_CT){
-		if(checkCTAlive() < 2){
+		if(get_ct_alive() < 2){
 			client_print(id,print_chat, "Este doar un CT in viata, nu poti folosi aceasta comanda!");
 			return PLUGIN_HANDLED;
 		}
@@ -506,10 +523,16 @@ public gamemode_toggle(id){
 	event_round_end();
 
 	ColorChat(0, GREEN,"^x04%s^x01 Gamemode-ul a fost schimbat manual!", serverPrefix);
-	if(b_RespawnMode)
+	if(b_RespawnMode) {
+		// add bot on respawn
+		server_cmd("yb kickall");
+		server_cmd("yb add 4 2 1 0 MrBot45");
 		ColorChat(0, GREEN,"^x04%s^x01 Gamemode-ul current este^x04 RESPAWN!", serverPrefix);
-	else
+	}
+	else {
+		server_cmd("yb kickall");
 		ColorChat(0, GREEN,"^x04%s^x01 Gamemode-ul current este^x04 DEATHRUN!", serverPrefix);
+	}
 
 	return PLUGIN_HANDLED;
 }
@@ -533,13 +556,13 @@ public players_check(){
 	return PLUGIN_CONTINUE;
 }
 
-//Check the time , if it's between 12:00AM and 8:00AM, then a vote to choose the gamemode will emerge
+//Check the time , if it's between 6:00PM and 8:00AM, then a vote to choose the gamemode will emerge
 public time_check(){
 	if(b_ManualToggled)
 		return PLUGIN_CONTINUE;
 	new data[3];
 	get_time("%H", data, 2);
-	if(str_to_num(data) < 8){
+	if((str_to_num(data) < 8) || (str_to_num(data) > 18)){
 		GAMEMODE_VOTE_START();
 	}
 	return PLUGIN_CONTINUE;
@@ -629,7 +652,7 @@ public GAMEMODE_VOTE_END(){
 
 	remove_task(hud_progress_taskid);
 
-	vote_time = 20.0;
+	vote_time = 15.0;
 
 	menu_destroy( g_voteMenu );
 }
@@ -660,6 +683,10 @@ public GAMEMODE_SET_RESPAWN(){
 	get_players(players, numPlayers, "ceh", "CT");
 	for(new i;i<numPlayers;i++)
 		ExecuteHamB(Ham_CS_RoundRespawn, players[i]);
+	
+	// add bot on respawn
+	server_cmd("yb kickall");
+	server_cmd("yb add 4 2 1 0 MrBot45");
 
 	return PLUGIN_CONTINUE;
 }
@@ -676,6 +703,8 @@ public GAMEMODE_SET_DEATHRUN(){
 	for(new i;i<numPlayers;i++)
 		ExecuteHamB(Ham_CS_RoundRespawn, players[i]);
 
+	server_cmd("yb kickall");
+
 	return PLUGIN_CONTINUE;
 }
 
@@ -691,9 +720,17 @@ public GetUserHealth(id){
 public GiveItems(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
+
 	//Remove Player Weapons
-	if(!b_RespawnMode)
+	if(!b_RespawnMode && g_bNewRound[id])
 		fm_strip_user_weapons(id);
+
+	g_bNewRound[id] = false;
+
+	if(pev(id, pev_weapons) & CSW_ALL_PISTOLS || pev(id, pev_weapons) & CSW_USP) {
+		cs_set_user_bpammo(id, CSW_USP, 244);
+		return PLUGIN_CONTINUE;
+	}
 
 	give_item(id, "weapon_knife");
 
@@ -750,15 +787,6 @@ public FwdClientKill( const id ) {
 	return FMRES_IGNORED;
 }
 
-//Block buttons during Respawn GameMode
-public button_use(iButton, iActivator, iCaller, iUseType, Float:fValue)
-{
-	if(!b_RespawnMode)
-		return HAM_IGNORED;
-
-	return HAM_IGNORED;
-}
-
 //Message containing info about the Respawn GameMode
 public respawn_message(){
 	if(!b_RespawnMode)
@@ -776,7 +804,7 @@ public fwButtonUsed(this, idcaller, idactivator, use_type, Float:value){
 	new index=get_ent_index(this);
 	if(index==-1) 
 		return HAM_IGNORED;
-	if(b_RespawnMode){
+	if(b_RespawnMode && cs_get_user_team(idcaller) == CS_TEAM_T){
 			return HAM_SUPERCEDE;
 	}
 	return HAM_IGNORED;
@@ -786,11 +814,19 @@ get_ent_index(ent){
 	return pev(ent, pev_iuser4)-1;
 }
 
-public checkCTAlive(){
+public get_ct_alive(){
 	new players[MAX_PLAYERS], iCtAlive;
 	get_players(players, iCtAlive, "aceh", "CT");
 	
 	return iCtAlive;
+}
+
+public CheckKillBots(){
+	new players[MAX_PLAYERS], iCtAlive, iCt;
+	get_players(players, iCtAlive, "aceh", "CT");
+	get_players(players, iCt, "ceh", "CT");
+	
+	return (iCtAlive == 0 && iCt > 0);
 }
 
 public RemoveOffer(id)
@@ -799,7 +835,7 @@ public RemoveOffer(id)
 }
 
 public kill_bots(){
-	if(checkCTAlive() > 0) return PLUGIN_CONTINUE;
+	if(!CheckKillBots()) return PLUGIN_CONTINUE;
 	new players[MAX_PLAYERS], iBotsAlive;
 	get_players(players, iBotsAlive, "adeh", "CT");
 
