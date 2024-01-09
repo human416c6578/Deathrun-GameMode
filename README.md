@@ -4,6 +4,11 @@
 
 The Deathrun GameMode plugin enhances your AMX Mod X server by introducing a Deathrun game mode. Players can experience exciting rounds with unique features such as respawn, lives, and voting for the game mode.
 
+## TODO
+
+- **Lang System** 
+- **Change ColorChat to CromChat** 
+
 ## Features
 
 - **Respawn System:** Players have the ability to respawn during the game.

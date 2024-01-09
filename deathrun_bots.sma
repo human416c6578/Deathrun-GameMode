@@ -5,6 +5,7 @@
 #include <fun>
 #include <fakemeta_util>
 #include <deathrun>
+#include <save>
 
 public plugin_init() {
 	register_plugin("Deathrun YAPB Tero", "1.0", "MrShark45");
@@ -14,56 +15,53 @@ public plugin_init() {
 }
 
 public plugin_end() {
-	server_cmd("yb kickall");
+	server_cmd("yb kickall instant");
 }
 
 public event_player_killed(id, attacker) {
 	if(!get_bool_respawn()) return PLUGIN_CONTINUE;
 
-	// check if bot was killed so we can spawn another so the round doesn't end
-	// we can kick the current bot later
+	// check if bot was killed so we can respawn him
 	if(cs_get_user_team(id) == CS_TEAM_T) {
+		// the terrorist was a bot
+		// respawn him
 		if(is_user_bot(id)) {
-			ExecuteHamB(Ham_CS_RoundRespawn, id);
-			GiveItems(id);
+			set_task(1.0, "respawn_player", id);
 		}
-		if(!is_user_bot(id)) {
-			server_cmd("yb kickall");
-			server_cmd("yb add 4 2 1 0 MrBot45");
-			new bot_id = get_bot_id();
-			if(bot_id != 0) {
-				ExecuteHamB(Ham_CS_RoundRespawn, bot_id);
-				GiveItems(bot_id);
-			}
+		else {
 			//respawn player
 			cs_set_user_team(id, CS_TEAM_CT);
-			ExecuteHamB(Ham_CS_RoundRespawn, id);
-			GiveItems(id);
+			set_task(1.0, "respawn_player", id);
+
+			server_cmd("yb add 4 1 1 0 MrBot45");
 			
+			new bot_id = get_bot_id();
+			if(bot_id != 0)	respawn_player(bot_id);
 		}
+
 		new next_tero = get_next_terrorist();
+
 		if(next_tero != 0) {
 			set_next_terrorist(0);
 			cs_set_user_team(next_tero, CS_TEAM_T);
-			ExecuteHamB(Ham_CS_RoundRespawn, next_tero);
-			GiveItems(next_tero);
-			server_cmd("yb kickall");
+			respawn_player(next_tero);
+			server_cmd("yb kickall instant");
 		}
 		//respawn killer
-		ExecuteHamB(Ham_CS_RoundRespawn, attacker);
-		GiveItems(attacker);
-		return HAM_SUPERCEDE;
+		//to make sure the killer doesn't exploit the save function we have to reset it
+		reset_save(attacker);
+		set_task(1.0, "respawn_player", attacker);
 	}
 
 	return PLUGIN_CONTINUE;
 }
 
-public kick_bot(id) {
-	new userid = get_user_userid(id);
-	server_cmd("kick #%d", userid);
+public respawn_player(id) {
+	ExecuteHamB(Ham_CS_RoundRespawn, id);
+	give_player_items(id);
 }
 
-public GiveItems(id){
+public give_player_items(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 
@@ -79,6 +77,7 @@ public GiveItems(id){
 		give_item(id,"ammo_45acp");
 	}
 	else if(cs_get_user_team(id) == CS_TEAM_T){
+		set_user_health(id, 200);
 		fm_give_item(id, "weapon_ak47");
 		fm_give_item(id, "weapon_m4a1");
 		cs_set_user_bpammo(id, CSW_AK47, 200);

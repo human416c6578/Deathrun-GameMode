@@ -5,5 +5,3 @@ native get_next_terrorist();
 native get_bool_respawn();
 native is_respawn_active();
 native tempRespawn_disable();
-native get_player_lives(id);
-native set_player_lives(id, value);

@@ -5,6 +5,7 @@
 #include <fakemeta_util>
 #include <engine>
 #include <deathrun>
+#include <deathrun_life>
 
 #define VERSION		"1.0"
 
@@ -34,6 +35,20 @@ public plugin_init()
 
 	RegisterHam(Ham_Spawn, "player", "player_spawn");
 
+}
+
+public plugin_natives() {
+	register_library("save");
+
+	register_native("reset_save", "_reset_save");
+}
+
+public _reset_save(plugin_id, argc) {
+	new id = get_param(1);
+
+	start_position[id][0] = 0;
+
+	used[id] = false;
 }
 
 public client_putinserver(id){
@@ -75,7 +90,7 @@ public Start(id){
 	ExecuteHamB(Ham_CS_RoundRespawn, id);
 
 	if(!is_respawn_active())
-		TakeLife(id);
+		set_player_lives(id, get_player_lives(id) - 1);
 
 	if(!start_position[id][0]) return PLUGIN_CONTINUE;
 
@@ -123,11 +138,6 @@ public ResetStart(id){
 	set_pev( id, pev_velocity, start_velocity[id]);
 }
 
-public TakeLife(id){
-	if(get_player_lives(id)){
-		set_player_lives(id, get_player_lives(id) - 1);
-	}
-}
 
 stock SetUserAgl(id,Float:agl[3]){
 	entity_set_vector(id,EV_VEC_angles,agl)
