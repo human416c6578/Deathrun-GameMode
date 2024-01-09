@@ -8,7 +8,9 @@ The Deathrun GameMode plugin enhances your AMX Mod X server by introducing a Dea
 
 - **Lang System** 
 - **Change ColorChat to CromChat** 
-- **Make deathrun modules work indipendentely:** deathrun_save depends on timer, deathrun_life and vip; deathrun_bots depednds on deathrun_save
+- **Make deathrun modules work indipendentely:**
+ - deathrun_save depends on timer, deathrun_life and vip; 
+ - deathrun_bots depednds on deathrun_save;
 
 ## Features
 
