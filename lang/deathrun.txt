@@ -1,0 +1,7 @@
+[en]
+NEW_TERRO_MSG=&x04%s &x01is the new &x07terrorist&x01!
+RESPAWN_END_MSG=Respawn Time has &x07ended&x01!
+
+[ro]
+NEW_TERRO_MSG=&x04%s &x01este noul &x07terorist&x01!
+RESPAWN_END_MSG=Timpul de respawn s-a &x07terminat&x01!

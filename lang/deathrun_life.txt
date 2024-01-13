@@ -1,0 +1,15 @@
+[en]
+KILL_PLAYER_MSG=You killed a player, now you have &x04%d &x01lives.
+DISPLAY_LIVES_MSG=You have &x04%d &x01lives, use the command &x04/revive &x01to use them.
+DENY_REVIVE_TEAM_MSG=You must be &x06CT &x01to use this command!
+DENY_REVIVE_ALIVE_MSG=There is only one &x06CT &x01alive, you cannot use this command!
+DENY_REVIVE_NO_LIVES_MSG=You have no lives left, kill a player to gain one.
+LIFE_USE_MSG=You have used a life, now you have &x04%d &x01lives.
+
+[ro]
+KILL_PLAYER_MSG=Ai omorat un jucator, acum ai &x04%d &x01vieti.
+DISPLAY_LIVES_MSG=Ai &x04%d &x01vieti, foloseste comanda &x04/revive &x01pentru a le folosi
+DENY_REVIVE_TEAM_MSG=Trebuie sa fii &x06CT &x01pentru a folosi aceasta comanda!
+DENY_REVIVE_ALIVE_MSG=Este doar un &x06CT &x01in viata, nu poti folosi aceasta comanda!
+DENY_REVIVE_NO_LIVES_MSG=Nu ai nicio viata, omoara un jucator pentru a castiga una.
+LIFE_USE_MSG=Ti-ai folosit o viata, ai ramas cu &x04%d &x01vieti.

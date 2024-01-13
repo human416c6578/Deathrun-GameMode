@@ -11,7 +11,7 @@ public plugin_init() {
 	register_plugin("Deathrun YAPB Tero", "1.0", "MrShark45");
 
 	//Events
-	RegisterHam(Ham_Killed, "player", "event_player_killed");
+	RegisterHam(Ham_Killed, "player", "event_player_killed", 1);
 }
 
 public plugin_end() {
@@ -19,7 +19,7 @@ public plugin_end() {
 }
 
 public event_player_killed(id, attacker) {
-	if(!get_bool_respawn()) return PLUGIN_CONTINUE;
+	if(is_deathrun_enabled()) return HAM_IGNORED;
 
 	// check if bot was killed so we can respawn him
 	if(cs_get_user_team(id) == CS_TEAM_T) {
@@ -29,14 +29,11 @@ public event_player_killed(id, attacker) {
 			set_task(1.0, "respawn_player", id);
 		}
 		else {
-			//respawn player
 			cs_set_user_team(id, CS_TEAM_CT);
 			set_task(1.0, "respawn_player", id);
 
 			server_cmd("yb add 4 1 1 0 MrBot45");
-			
-			new bot_id = get_bot_id();
-			if(bot_id != 0)	respawn_player(bot_id);
+			set_task(1.0, "respawn_bot");
 		}
 
 		new next_tero = get_next_terrorist();
@@ -44,21 +41,47 @@ public event_player_killed(id, attacker) {
 		if(next_tero != 0) {
 			set_next_terrorist(0);
 			cs_set_user_team(next_tero, CS_TEAM_T);
-			respawn_player(next_tero);
+			set_task(1.0, "respawn_player", id);
 			server_cmd("yb kickall instant");
 		}
 		//respawn killer
 		//to make sure the killer doesn't exploit the save function we have to reset it
-		reset_save(attacker);
-		set_task(1.0, "respawn_player", attacker);
+		if(is_user_connected(attacker)) {
+#if defined reset_save
+			reset_save(attacker);
+#endif
+			set_task(1.0, "respawn_player", attacker);
+		}
 	}
 
-	return PLUGIN_CONTINUE;
+	return HAM_IGNORED;
+}
+
+public forward_deathrun_enable(bool:value) {
+	if(value)
+		server_cmd("yb kickall instant");
+	else {
+		server_cmd("yb add 4 1 1 0 MrBot45");
+		set_task(1.0, "respawn_bot");
+	}
+		
+		
 }
 
 public respawn_player(id) {
+	if(!is_user_connected(id)) return PLUGIN_HANDLED;
+
 	ExecuteHamB(Ham_CS_RoundRespawn, id);
 	give_player_items(id);
+
+	return PLUGIN_HANDLED;
+}
+
+public respawn_bot() {
+	new bot_id = get_bot_id();
+	if(bot_id != 0)	respawn_player(bot_id);
+
+	return PLUGIN_HANDLED;
 }
 
 public give_player_items(id){

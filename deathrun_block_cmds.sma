@@ -99,7 +99,7 @@ public fwd_button_used(this, idcaller, idactivator, use_type, Float:value){
 	new index=get_ent_index(this);
 	if(index==-1) 
 		return HAM_IGNORED;
-	if(get_bool_respawn() && cs_get_user_team(idcaller) == CS_TEAM_T){
+	if(!is_deathrun_enabled() && cs_get_user_team(idcaller) == CS_TEAM_T){
 			return HAM_SUPERCEDE;
 	}
 	return HAM_IGNORED;

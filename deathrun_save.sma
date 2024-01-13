@@ -6,11 +6,9 @@
 #include <engine>
 #include <deathrun>
 #include <deathrun_life>
+#include <timer>
 
 #define VERSION		"1.0"
-
-native isPlayerVip(id);
-forward timer_player_category_changed(id);
 
 new const Float:VEC_DUCK_HULL_MIN[3] = { -16.0, -16.0, -18.0 };
 new const Float:VEC_DUCK_HULL_MAX[3] = { 16.0, 16.0, 18.0 };
@@ -18,8 +16,6 @@ new const Float:VEC_DUCK_HULL_MAX[3] = { 16.0, 16.0, 18.0 };
 new start_position[33][3];
 new Float:start_angles[33][3];
 new Float:start_velocity[33][3];
-
-new vip_lives[33];
 
 new bool:used[33];
 
@@ -56,16 +52,10 @@ public client_putinserver(id){
 
 	used[id] = false;
 
-	if(isPlayerVip(id))
-		vip_lives[id] = 2;
-
 }
 
 public event_round_start(){
 	for(new i;i<33;i++){
-		if(isPlayerVip(i))
-			vip_lives[i] = 2;
-
 		start_position[i][0] = 0;
 
 		used[i] = false;
@@ -76,21 +66,28 @@ public event_round_start(){
 public player_spawn(id){
 	used[id] = false;
 }
-
+#if defined timer_player_category_changed
 public timer_player_category_changed(id){
 	start_position[id][0] = 0;
 	used[id] = false;
 }
 
+#endif
+
 public Start(id){
 	if (cs_get_user_team(id) != CS_TEAM_CT) return PLUGIN_CONTINUE;
 
-	if(!get_player_lives(id) && !is_respawn_active()) return PLUGIN_CONTINUE;
+#if defined get_player_lives
+	if(is_deathrun_enabled() && !is_respawn_active())
+		if(get_player_lives(id) < 1) return PLUGIN_CONTINUE;
+#else
+	if(is_deathrun_enabled() && !is_respawn_active()) return PLUGIN_CONTINUE;
+#endif
 
 	ExecuteHamB(Ham_CS_RoundRespawn, id);
-
-	if(!is_respawn_active())
-		set_player_lives(id, get_player_lives(id) - 1);
+#if defined get_player_lives
+	set_player_lives(id, get_player_lives(id) - 1);
+#endif
 
 	if(!start_position[id][0]) return PLUGIN_CONTINUE;
 

@@ -1,0 +1,13 @@
+[en]
+VOTE_MSG=&x04%s &x01voted for &x07%s&x01!
+GAMEMODE_WON_MSG=&x04%s &x01won by &x04%d &x01votes!
+GAMEMODE_EQUAL_MSG=There was a &x07tie &x01between the two options!
+GAMEMODE_RANDOM_MSG=A &x07gamemode &x01will be chosen randomly!
+GAMEMODE_ACTIVATED_MSG=&x07%s gamemode &x01was activated!
+
+[ro]
+VOTE_MSG=&x04%s &x01a votat pentru &x07%s&x01!
+GAMEMODE_WON_MSG=&x07%s &x01a castigat cu &x04%d &x01voturi!
+GAMEMODE_EQUAL_MSG=A fost &x07egalitate &x01intre cele doua optiuni!
+GAMEMODE_RANDOM_MSG=Un &x07gamemode &x01o sa fie ales random!
+GAMEMODE_ACTIVATED_MSG=&x07%s gamemode &x01a fost activat!
