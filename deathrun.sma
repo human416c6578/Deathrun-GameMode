@@ -257,7 +257,7 @@ public terrorist_pick(){
 	new terro = players[random(iNum)];
 		
 	//Checks if he isn't the terrorist from the last round
-	if(terro != g_iLastTerro){
+	if(terro != g_iLastTerro && cs_get_user_team(terro) != CS_TEAM_SPECTATOR){
 		set_terro(terro);
 	}
 	else{
