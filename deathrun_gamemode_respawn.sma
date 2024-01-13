@@ -6,6 +6,8 @@
 
 #define HUD_TASKID 9123132
 
+#define VOTE_TIME 15.0
+
 enum gamemodes{
 	DEATHRUN,
 	RESPAWN,
@@ -16,7 +18,7 @@ new g_votes[gamemodes];
 
 //vote progress display
 new g_hudObjectProgress;
-new Float:g_fVoteTime = 15.0;
+new Float:g_fVoteTime = VOTE_TIME;
 new bool:g_bVoteInProgress;
 
 new bool:g_bManualToggled;
@@ -166,7 +168,7 @@ public GAMEMODE_VOTE_END(){
 
 	remove_task(HUD_TASKID);
 
-	g_fVoteTime = 15.0;
+	g_fVoteTime = VOTE_TIME;
 }
 
 public GAMEMODE_VOTE_PROGRESS(){

@@ -33,13 +33,14 @@ The plugin provides several cvars for configuration:
 
 The plugin offers native functions for advanced scripting:
 
-- **get_bool_respawn:** Returns the current respawn mode status.
-- **is_respawn_active:** Checks if respawn is currently active.
-- **tempRespawn_disable:** Temporarily disables respawn.
-- **set_next_terrorist:** Sets the next terrorist player.
+- **bool:is_deathrun_enabled():** Returns the current deathrun mode status.
+- **enable_deathrun(bool:value):** Enable/Disable the deathrun mode.
+- **disable_respawn():** Temporarily disables respawn.
+- **bool:is_respawn_active():** Checks if respawn is currently active.
 - **get_next_terrorist:** Retrieves the ID of the next terrorist player.
-- **get_player_lives:** Gets the number of lives for a player.
-- **set_player_lives:** Sets the number of lives for a player.
+- **set_next_terrorist:** Sets the id of the next terrorist player.
+
+- **forward_deathrun_enable(bool:value):** Functin called if deathrun is enabled/disabled.
 
 ## Gamemode Voting
 
