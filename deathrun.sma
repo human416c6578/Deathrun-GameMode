@@ -291,13 +291,13 @@ public give_items(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 
+	if(pev(id, pev_weapons) & CSW_PRIMARY) {
+		fm_strip_user_weapons(id);
+	}
+
 	if(pev(id, pev_weapons) & CSW_USP) {
 		cs_set_user_bpammo(id, CSW_USP, 244);
 		return PLUGIN_CONTINUE;
-	}
-
-	if(pev(id, pev_weapons) & CSW_PRIMARY) {
-		fm_strip_user_weapons(id);
 	}
 
 	give_item(id, "weapon_knife");

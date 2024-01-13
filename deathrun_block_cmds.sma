@@ -6,9 +6,9 @@
 #include <deathrun>
 
 public plugin_init() {
-    register_plugin("Deathrun Block Commands", "1.0", "MrShark45");
+	register_plugin("Deathrun Block Commands", "1.0", "MrShark45");
 
-    //Block Radio
+	//Block Radio
 	register_clcmd( "radio1", "cmd_radio" );
 	register_clcmd( "radio2", "cmd_radio" );
 	register_clcmd( "radio3", "cmd_radio" );
