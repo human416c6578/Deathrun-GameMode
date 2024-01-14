@@ -240,6 +240,8 @@ public time_check(){
 }
 
 public respawn_player(id){
+	if(!is_user_connected(id)) return PLUGIN_HANDLED;
+	
 	if(cs_get_user_team(id) == CS_TEAM_CT)
 		ExecuteHamB(Ham_CS_RoundRespawn, id);
 
