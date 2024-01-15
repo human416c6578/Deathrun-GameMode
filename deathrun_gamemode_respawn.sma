@@ -256,6 +256,7 @@ public force_refuse(id)
 move_players(CsTeams:team) {
 	for(new i = 0;i<MAX_PLAYERS;i++) {
 		if(!is_user_connected(i) || is_user_bot(i)) continue;
+		if(cs_get_user_team(i) == CS_TEAM_SPECTATOR) continue;
 
 		cs_set_user_team(i, team);
 	}

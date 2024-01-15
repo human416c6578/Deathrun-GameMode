@@ -278,7 +278,7 @@ public set_terro(id) {
 	g_iLastTerro = id;
 	CC_SendMessage(0, "%L", 0, "NEW_TERRO_MSG", szName);
 	g_iNextTerro = 0;
-
+	fm_strip_user_weapons(id);
 	ExecuteHamB(Ham_CS_RoundRespawn, id);
 
 	return PLUGIN_CONTINUE;
