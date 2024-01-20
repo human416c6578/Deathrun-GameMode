@@ -294,7 +294,7 @@ public give_items(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 
-	if(pev(id, pev_weapons) & CSW_PRIMARY) {
+	if(pev(id, pev_weapons) & CSW_PRIMARY && cs_get_user_team(id) != CS_TEAM_T) {
 		fm_strip_user_weapons(id);
 	}
 

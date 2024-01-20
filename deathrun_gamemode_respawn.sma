@@ -65,7 +65,8 @@ public event_player_killed(victim, attacker){
 }
 
 public client_putinserver(id) {
-	set_task(2.0, "respawn_player", id);
+	if(g_bEnabled)
+		set_task(2.0, "respawn_player", id);
 }
 
 public gamemode_toggle(id){
