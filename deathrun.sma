@@ -309,8 +309,11 @@ public give_items(id){
 		fm_strip_user_weapons(id);
 	}
 	*/
-	if(g_bFirstSpawn[id])
+	if(g_bFirstSpawn[id]) {
 		fm_strip_user_weapons(id);
+		g_bFirstSpawn[id] = false;
+	}
+		
 
 	if(pev(id, pev_weapons) & CSW_USP) {
 		cs_set_user_bpammo(id, CSW_USP, 244);
