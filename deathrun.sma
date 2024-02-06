@@ -23,6 +23,8 @@ new g_iNextTerro;
 new bool:g_bEnabled; // Gamemode is enabled ( pick terrorist on round end )
 new g_fwdEnableDeathrun;
 
+new bool:g_bFirstSpawn[MAX_PLAYERS];
+
 public plugin_init( ) {
 	register_plugin( "Deathrun GameMode", "1.0", "MrShark45" );
 
@@ -127,6 +129,8 @@ public client_putinserver(id){
 		set_task(2.0, "respawn_player", id);
 	else
 		set_task(2.0, "kill_player", id);
+
+	g_bFirstSpawn[id] = true;
 }
 
 public client_disconnected(id){
@@ -135,7 +139,7 @@ public client_disconnected(id){
 		new szName[32];
 		get_user_name(id, szName, charsmax(szName));
 		CC_SendMessage(0, "&x07%s &x01 s-a deconectat!", szName);
-		terrorist_pick();
+		terrorist_pick(true);
 	}
 }
 
@@ -149,6 +153,10 @@ public event_round_start(){
 	//Create Task to disable respawn after x seconds
 	set_task(get_pcvar_float(g_pcvarRespawnTime), "respawn_disable", RESPAWN_TASKID);
 
+	for (new i=0;i<MAX_PLAYERS;i++) {
+		g_bFirstSpawn[i] = true;
+	}
+
 	return PLUGIN_CONTINUE;
 }
 
@@ -159,7 +167,7 @@ public event_round_end(){
 	//Move Players from T to CT
 	move_players(CS_TEAM_CT);
 
-	terrorist_pick();
+	terrorist_pick(false);
 
 	if(task_exists(RESPAWN_TASKID))
 		remove_task(RESPAWN_TASKID);
@@ -244,14 +252,14 @@ public kill_player(id){
 	return PLUGIN_HANDLED;
 }
 
-public terrorist_pick(){
+public terrorist_pick(bool:respawn){
 	if(is_user_connected(g_iNextTerro)){
-		set_terro(g_iNextTerro);
+		set_terro(g_iNextTerro, respawn);
 		return PLUGIN_CONTINUE;
 	}
 		
 
-	if(get_players_alive(CS_TEAM_CT)<2)
+	if(get_players_alive(CS_TEAM_CT) < 2)
 		return PLUGIN_CONTINUE;
 	
 	//Pick a random player
@@ -261,17 +269,17 @@ public terrorist_pick(){
 		
 	//Checks if he isn't the terrorist from the last round
 	if(terro != g_iLastTerro && cs_get_user_team(terro) != CS_TEAM_SPECTATOR){
-		set_terro(terro);
+		set_terro(terro, respawn);
 	}
 	else{
-		set_task(0.1,"terrorist_pick");
+		set_task(0.1, "terrorist_pick", respawn);
 		return PLUGIN_CONTINUE;
 	}
 	
 	return PLUGIN_CONTINUE;
 }
 
-public set_terro(id) {
+public set_terro(id, bool:respawn) {
 	new szName[32];
 	get_user_name(id, szName, charsmax(szName));
 	cs_set_user_team(id, CS_TEAM_T);
@@ -279,7 +287,9 @@ public set_terro(id) {
 	CC_SendMessage(0, "%L", 0, "NEW_TERRO_MSG", szName);
 	g_iNextTerro = 0;
 	fm_strip_user_weapons(id);
-	ExecuteHamB(Ham_CS_RoundRespawn, id);
+
+	if(respawn)
+		ExecuteHamB(Ham_CS_RoundRespawn, id);
 
 	return PLUGIN_CONTINUE;
 }
@@ -294,9 +304,13 @@ public give_items(id){
 	if(!is_user_connected(id))
 		return PLUGIN_CONTINUE;
 
+	/*
 	if(pev(id, pev_weapons) & CSW_PRIMARY && cs_get_user_team(id) != CS_TEAM_T) {
 		fm_strip_user_weapons(id);
 	}
+	*/
+	if(g_bFirstSpawn[id])
+		fm_strip_user_weapons(id);
 
 	if(pev(id, pev_weapons) & CSW_USP) {
 		cs_set_user_bpammo(id, CSW_USP, 244);
