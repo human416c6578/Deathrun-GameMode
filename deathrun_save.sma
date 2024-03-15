@@ -79,14 +79,18 @@ public Start(id){
 
 #if defined get_player_lives
 	if(is_deathrun_enabled() && !is_respawn_active())
-		if(get_player_lives(id) < 1) return PLUGIN_CONTINUE;
+		if(get_player_lives(id) < 1 && get_player_extra_lives(id) < 1) return PLUGIN_CONTINUE;
 #else
 	if(is_deathrun_enabled() && !is_respawn_active()) return PLUGIN_CONTINUE;
 #endif
 
 	ExecuteHamB(Ham_CS_RoundRespawn, id);
+	
 #if defined get_player_lives
-	set_player_lives(id, get_player_lives(id) - 1);
+	if(get_player_extra_lives(id) > 0)
+		set_player_lives(id, get_player_extra_lives(id) - 1);
+	else
+		set_player_lives(id, get_player_lives(id) - 1);
 #endif
 
 	if(!start_position[id][0]) return PLUGIN_CONTINUE;

@@ -25,7 +25,9 @@ public plugin_natives() {
 	register_library("deathrun_life");
 
 	register_native("get_player_lives", "get_player_lives_native");
+	register_native("get_player_extra_lives", "get_player_extra_lives_native");
 	register_native("set_player_lives", "set_player_lives_native");
+	register_native("set_player_extra_lives", "set_player_extra_lives_native");
 }
 
 public plugin_cfg() {
@@ -39,13 +41,23 @@ public client_putinserver(id) {
 public get_player_lives_native(numParams){
 	new id = get_param(1);
 
-	if(g_iExtraLives[id] > 0)
-		return g_iExtraLives[id];
-
 	return g_iLives[id];
 }
 
+public get_player_extra_lives_native(numParams){
+	new id = get_param(1);
+
+	return g_iExtraLives[id];
+}
+
 public set_player_lives_native(numParams){
+	new id = get_param(1);
+	new value = get_param(2);
+
+	g_iLives[id] = value;
+}
+
+public set_player_extra_lives_native(numParams){
 	new id = get_param(1);
 	new value = get_param(2);
 
