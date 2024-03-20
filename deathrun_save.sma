@@ -84,12 +84,15 @@ public Start(id){
 	if(is_deathrun_enabled() && !is_respawn_active()) return PLUGIN_CONTINUE;
 #endif
 
-	ExecuteHamB(Ham_CS_RoundRespawn, id);
+	
 #if defined get_player_lives
 	set_player_lives(id, get_player_lives(id) - 1);
 #endif
 
-	if(!start_position[id][0]) return PLUGIN_CONTINUE;
+	if(!start_position[id][0]){
+		ExecuteHamB(Ham_CS_RoundRespawn, id);
+		return PLUGIN_CONTINUE;
+	} 
 
 	set_pev( id, pev_flags, pev( id, pev_flags ) | FL_DUCKING );
 	engfunc( EngFunc_SetSize, id, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX )
