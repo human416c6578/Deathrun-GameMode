@@ -85,6 +85,7 @@ public Start(id){
 #endif
 
 	ExecuteHamB(Ham_CS_RoundRespawn, id);
+	
 #if defined get_player_lives
 	set_player_lives(id, get_player_lives(id) - 1);
 #endif

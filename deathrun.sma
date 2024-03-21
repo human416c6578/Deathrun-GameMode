@@ -136,10 +136,11 @@ public client_putinserver(id){
 public client_disconnected(id){
 	//Replace the terrorist if he disconnects
 	if(!b_MapEnded && g_iLastTerro == id && g_bEnabled) {
+		terrorist_pick(true);
 		new szName[32];
 		get_user_name(id, szName, charsmax(szName));
 		CC_SendMessage(0, "&x07%s &x01 s-a deconectat!", szName);
-		terrorist_pick(true);
+		
 	}
 }
 
@@ -272,7 +273,8 @@ public terrorist_pick(bool:respawn){
 		set_terro(terro, respawn);
 	}
 	else{
-		set_task(0.1, "terrorist_pick", respawn);
+		//set_task(0.1, "terrorist_pick", respawn);
+		terrorist_pick(respawn);
 		return PLUGIN_CONTINUE;
 	}
 	
