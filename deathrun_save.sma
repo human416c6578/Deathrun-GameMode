@@ -77,19 +77,27 @@ public timer_player_category_changed(id){
 public Start(id){
 	if (cs_get_user_team(id) != CS_TEAM_CT) return PLUGIN_CONTINUE;
 
+	if(!is_deathrun_enabled() || is_respawn_active()) {
+		ExecuteHamB(Ham_CS_RoundRespawn, id);
+		SetPosition(id);
+		return PLUGIN_CONTINUE;
+	}
+
 #if defined get_player_lives
-	if(is_deathrun_enabled() && !is_respawn_active())
-		if(get_player_lives(id) < 1) return PLUGIN_CONTINUE;
-#else
-	if(is_deathrun_enabled() && !is_respawn_active()) return PLUGIN_CONTINUE;
+		if(get_player_lives(id) < 1 && get_player_extra_lives(id) < 1) return PLUGIN_CONTINUE;
+
+		if(get_player_extra_lives(id) > 0)
+			set_player_lives(id, get_player_extra_lives(id) - 1);
+		else if(get_player_lives(id) > 0)
+			set_player_lives(id, get_player_lives(id) - 1);
+
+		ExecuteHamB(Ham_CS_RoundRespawn, id);
 #endif
 
-	ExecuteHamB(Ham_CS_RoundRespawn, id);
-	
-#if defined get_player_lives
-	set_player_lives(id, get_player_lives(id) - 1);
-#endif
+	return PLUGIN_CONTINUE;
+}
 
+public SetPosition(id){
 	if(!start_position[id][0]) return PLUGIN_CONTINUE;
 
 	set_pev( id, pev_flags, pev( id, pev_flags ) | FL_DUCKING );

@@ -2,6 +2,7 @@
 #include <cstrike>
 #include <hamsandwich>
 #include <cromchat>
+#include <deathrun>
 
 new g_iLives[MAX_PLAYERS];
 new g_iExtraLives[MAX_PLAYERS];
@@ -25,7 +26,9 @@ public plugin_natives() {
 	register_library("deathrun_life");
 
 	register_native("get_player_lives", "get_player_lives_native");
+	register_native("get_player_extra_lives", "get_player_extra_lives_native");
 	register_native("set_player_lives", "set_player_lives_native");
+	register_native("set_player_extra_lives", "set_player_extra_lives_native");
 }
 
 public plugin_cfg() {
@@ -39,13 +42,23 @@ public client_putinserver(id) {
 public get_player_lives_native(numParams){
 	new id = get_param(1);
 
-	if(g_iExtraLives[id] > 0)
-		return g_iExtraLives[id];
-
 	return g_iLives[id];
 }
 
+public get_player_extra_lives_native(numParams){
+	new id = get_param(1);
+
+	return g_iExtraLives[id];
+}
+
 public set_player_lives_native(numParams){
+	new id = get_param(1);
+	new value = get_param(2);
+
+	g_iLives[id] = value;
+}
+
+public set_player_extra_lives_native(numParams){
 	new id = get_param(1);
 	new value = get_param(2);
 
@@ -70,6 +83,10 @@ public life_diplay(id){
 public life_use(id){
 	if(cs_get_user_team(id) != CS_TEAM_CT) {
 		CC_SendMessage(id, "%L", id, "DENY_REVIVE_TEAM_MSG");
+		return PLUGIN_HANDLED;
+	}
+	if(is_respawn_active()){
+		ExecuteHamB(Ham_CS_RoundRespawn, id);
 		return PLUGIN_HANDLED;
 	}
 	if(get_ct_alive() < 2){
