@@ -38,6 +38,10 @@ public player_hurt(id, inflictor, attacker, Float:damage, damagebits){
 
 		return HAM_HANDLED;
 	}
+	// remove self damage with he grenade
+	if(attacker == inflictor && (damagebits & (1<<24))) {
+		SetHamParamFloat( 4 , 0.0 );
+	}
 	return HAM_IGNORED;
 }
 

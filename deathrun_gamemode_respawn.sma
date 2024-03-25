@@ -195,6 +195,7 @@ public gamemode_set_respawn(){
 	enable_deathrun(false);
 
 	set_cvar_num("mp_round_infinite", 1);
+	set_cvar_num("mp_falldamage", 0);
 
 	move_players(CS_TEAM_CT);
 	respawn_players(CS_TEAM_CT);
@@ -210,7 +211,8 @@ public gamemode_set_deathrun(){
 	enable_deathrun(true);
 
 	set_cvar_num("sv_restart", 1);
-	set_cvar_num("mp_round_infinite", 0);
+	set_cvar_string("mp_round_infinite", "b"); // b - block needed players round end check
+	set_cvar_num("mp_falldamage", 1);
 
 	return PLUGIN_CONTINUE;
 }
