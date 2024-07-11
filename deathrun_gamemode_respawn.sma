@@ -212,7 +212,7 @@ public gamemode_set_deathrun(){
 
 	set_cvar_num("sv_restart", 1);
 	set_cvar_string("mp_round_infinite", "b"); // b - block needed players round end check
-	set_cvar_num("mp_falldamage", 1);
+	//set_cvar_num("mp_falldamage", 1);
 
 	return PLUGIN_CONTINUE;
 }

@@ -30,7 +30,7 @@ public plugin_init()
 	register_logevent("event_round_start", 2, "1=Round_Start");
 
 	RegisterHam(Ham_Spawn, "player", "player_spawn");
-
+	RegisterHam(Ham_Killed, "player", "player_killed", 1);
 }
 
 public plugin_natives() {
@@ -66,6 +66,18 @@ public event_round_start(){
 public player_spawn(id){
 	used[id] = false;
 }
+
+public player_killed(id, attacker) {
+	if(!is_deathrun_enabled()) return HAM_IGNORED;
+
+	if(!is_user_connected(attacker)) return HAM_IGNORED;
+
+	start_position[attacker][0] = 0;
+	used[attacker] = false;
+
+	return HAM_IGNORED;
+}
+
 #if defined timer_player_category_changed
 public timer_player_category_changed(id){
 	start_position[id][0] = 0;
