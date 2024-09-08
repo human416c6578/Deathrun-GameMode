@@ -14,6 +14,7 @@ enum gamemodes{
 }
 
 //GAMEMODE VOTING
+// Votes for menu voting
 new g_votes[gamemodes];
 
 //vote progress display
@@ -24,13 +25,20 @@ new bool:g_bVoteInProgress;
 new bool:g_bManualToggled;
 new bool:g_bEnabled;
 
+// Votes to change the gamemode, like rtv
+new bool:g_bVoted[MAX_PLAYERS];
+new g_pPlayersPercent;
+
 public plugin_init( ) {
 	register_plugin( "Deathrun Respawn Gamemode", "1.0", "MrShark45" );
 	
+	g_pPlayersPercent = create_cvar("gamemode_players_percent", "0.6", FCVAR_NONE, "Percent of players needed to vote to change the gamemode", true, 0.1, true, 1.0);
+
 	//Command to start the gamemode vote
 	register_clcmd("deathrun_vote", "gamemode_start_vote");
 	//Command to toggle the gamemode
 	register_clcmd("deathrun_toggle","gamemode_toggle");
+	register_clcmd("say dr", "player_vote");
 	RegisterHam(Ham_Killed, "player", "event_player_killed");
 	
 	g_hudObjectProgress = CreateHudSyncObj()
@@ -67,6 +75,46 @@ public event_player_killed(victim, attacker){
 public client_putinserver(id) {
 	if(g_bEnabled)
 		set_task(2.0, "respawn_player", id);
+}
+
+public client_disconnected(id) {
+	g_bVoted[id] = false;
+}
+
+public player_vote(id) {
+	g_bVoted[id] = true;
+
+	new szName[64];
+	get_user_name(id, szName, charsmax(szName));
+	CC_SendMessage(0, "%L", LANG_PLAYER, "RTV_MSG" ,szName, g_bEnabled?"DEATHRUN":"RESPAWN");
+
+	votes_check(id);
+}
+
+public votes_check(id){
+	new iVotesNeeded = 0;
+	new iVotes = 0;
+	new iPlayers = 0;
+	for(new i;i<MAX_PLAYERS;i++){
+		iVotes += g_bVoted[i];
+
+		if(!is_user_connected(i)) continue;
+		if(is_user_bot(i)) continue;
+		if(cs_get_user_team(i) == CS_TEAM_SPECTATOR) continue;
+
+		iPlayers++;
+	}
+
+	iVotesNeeded = floatround(iPlayers * get_pcvar_float(g_pPlayersPercent));
+
+	CC_SendMessage(0, "%L", LANG_PLAYER, "RTV_VOTES_MSG", iVotes - iVotesNeeded);
+
+	if(iVotes >= iVotesNeeded){
+		if(g_bEnabled)
+			gamemode_set_respawn();
+		else
+			gamemode_set_deathrun();
+	}
 }
 
 public gamemode_toggle(id){
@@ -142,7 +190,7 @@ public GAMEMODE_VOTE_HANDLER(id, menu, item){
 
 	CC_SendMessage(0, "%L", LANG_PLAYER, "VOTE_MSG" ,szName, item?"RESPAWN":"DEATHRUN");
 
-	g_votes[ item ]++;
+	g_votes[item]++;
 
 	menu_destroy( menu );
 
@@ -216,7 +264,6 @@ public gamemode_set_deathrun(){
 
 	return PLUGIN_CONTINUE;
 }
-
 
 public players_check(){
 	if(g_bManualToggled)
