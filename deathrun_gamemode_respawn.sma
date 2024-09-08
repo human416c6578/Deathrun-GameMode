@@ -38,7 +38,8 @@ public plugin_init( ) {
 	register_clcmd("deathrun_vote", "gamemode_start_vote");
 	//Command to toggle the gamemode
 	register_clcmd("deathrun_toggle","gamemode_toggle");
-	register_clcmd("say", "player_vote");
+	register_clcmd("say rtg", "player_vote");
+	register_clcmd("say /rtg", "player_vote");
 	RegisterHam(Ham_Killed, "player", "event_player_killed");
 	
 	g_hudObjectProgress = CreateHudSyncObj()
