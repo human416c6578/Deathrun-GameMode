@@ -15,7 +15,7 @@ enum gamemodes{
 
 //GAMEMODE VOTING
 // Votes for menu voting
-new g_votes[gamemodes];
+new g_iVotes[gamemodes];
 
 //vote progress display
 new g_hudObjectProgress;
@@ -38,7 +38,7 @@ public plugin_init( ) {
 	register_clcmd("deathrun_vote", "gamemode_start_vote");
 	//Command to toggle the gamemode
 	register_clcmd("deathrun_toggle","gamemode_toggle");
-	register_clcmd("say dr", "player_vote");
+	register_clcmd("say rtg", "player_vote");
 	RegisterHam(Ham_Killed, "player", "event_player_killed");
 	
 	g_hudObjectProgress = CreateHudSyncObj()
@@ -53,7 +53,6 @@ public plugin_cfg() {
 	g_bEnabled = false;
 
 	set_task(10.0, "time_check");
-	set_task(10.0, "players_check");
 }
 
 public event_player_killed(victim, attacker){
@@ -82,21 +81,24 @@ public client_disconnected(id) {
 }
 
 public player_vote(id) {
-	g_bVoted[id] = true;
+	g_bVoted[id] = !g_bVoted[id];
 
 	new szName[64];
 	get_user_name(id, szName, charsmax(szName));
-	CC_SendMessage(0, "%L", LANG_PLAYER, "RTV_MSG" ,szName, g_bEnabled?"DEATHRUN":"RESPAWN");
 
-	votes_check(id);
+	new iVotes = 0;
+	new iVotesNeeded = calculate_votes_needed(iVotes);
+
+	CC_SendMessage(0, "%L", LANG_PLAYER, g_bVoted[id]?"RTV_MSG":"RTV_OFF_MSG" ,szName, g_bEnabled?"DEATHRUN":"RESPAWN", iVotesNeeded);
+
+	votes_check(iVotes, iVotesNeeded);
 }
 
-public votes_check(id){
-	new iVotesNeeded = 0;
-	new iVotes = 0;
+public calculate_votes_needed(iVotes){
 	new iPlayers = 0;
+
 	for(new i;i<MAX_PLAYERS;i++){
-		iVotes += g_bVoted[i];
+		iVotes += _:g_bVoted[i];
 
 		if(!is_user_connected(i)) continue;
 		if(is_user_bot(i)) continue;
@@ -105,15 +107,19 @@ public votes_check(id){
 		iPlayers++;
 	}
 
-	iVotesNeeded = floatround(iPlayers * get_pcvar_float(g_pPlayersPercent));
-
-	CC_SendMessage(0, "%L", LANG_PLAYER, "RTV_VOTES_MSG", iVotes - iVotesNeeded);
-
+	return floatround(iPlayers * get_pcvar_float(g_pPlayersPercent));
+	
+}
+public votes_check(iVotes, iVotesNeeded){
 	if(iVotes >= iVotesNeeded){
+		for(new i;i<MAX_PLAYERS;i++)
+			g_bVoted[i] = false;
+
 		if(g_bEnabled)
-			gamemode_set_respawn();
-		else
 			gamemode_set_deathrun();
+		else
+			gamemode_set_respawn();
+			
 	}
 }
 
@@ -147,7 +153,7 @@ public GAMEMODE_VOTE_START(){
 	g_bVoteInProgress = true;
 
 	//RESET PREVIOUS VOTES IF ANY
-	g_votes[DEATHRUN] = g_votes[RESPAWN] = 0;
+	g_iVotes[DEATHRUN] = g_iVotes[RESPAWN] = 0;
 
 	new players[32], iNum;
 	get_players( players, iNum, "ch" );
@@ -190,9 +196,9 @@ public GAMEMODE_VOTE_HANDLER(id, menu, item){
 
 	CC_SendMessage(0, "%L", LANG_PLAYER, "VOTE_MSG" ,szName, item?"RESPAWN":"DEATHRUN");
 
-	g_votes[item]++;
+	g_iVotes[item]++;
 
-	menu_destroy( menu );
+	menu_destroy(menu);
 
 	return PLUGIN_HANDLED;
 }
@@ -200,12 +206,12 @@ public GAMEMODE_VOTE_HANDLER(id, menu, item){
 public GAMEMODE_VOTE_END(){
 	g_bVoteInProgress = false;
 
-	if ( g_votes[DEATHRUN] > g_votes[RESPAWN] ){
-		CC_SendMessage(0, "%L", LANG_PLAYER, "GAMEMODE_WON_MSG", "Deathrun", g_votes[DEATHRUN]);
+	if ( g_iVotes[DEATHRUN] > g_iVotes[RESPAWN] ){
+		CC_SendMessage(0, "%L", LANG_PLAYER, "GAMEMODE_WON_MSG", "Deathrun", g_iVotes[DEATHRUN]);
 		gamemode_set_deathrun();
 	}
-	else if ( g_votes[DEATHRUN] < g_votes[RESPAWN] ){
-		CC_SendMessage(0, "%L", LANG_PLAYER, "GAMEMODE_WON_MSG", "Respawn", g_votes[RESPAWN]);
+	else if ( g_iVotes[DEATHRUN] < g_iVotes[RESPAWN] ){
+		CC_SendMessage(0, "%L", LANG_PLAYER, "GAMEMODE_WON_MSG", "Respawn", g_iVotes[RESPAWN]);
 		gamemode_set_respawn();
 	}
 	else{
@@ -231,7 +237,7 @@ public GAMEMODE_VOTE_PROGRESS(){
 	for ( new i; i < pnum; i++ )
 	{
 		tempid = players[i];
-		ShowSyncHudMsg(tempid, g_hudObjectProgress, "DEATHRUN %d Voturi^nRESPAWN %d Voturi^n^nTimp de vot ramas %d secunde", g_votes[DEATHRUN], g_votes[RESPAWN], floatround(g_fVoteTime));
+		ShowSyncHudMsg(tempid, g_hudObjectProgress, "DEATHRUN %d Voturi^nRESPAWN %d Voturi^n^nTimp de vot ramas %d secunde", g_iVotes[DEATHRUN], g_iVotes[RESPAWN], floatround(g_fVoteTime));
 	}
 }
 
@@ -261,18 +267,6 @@ public gamemode_set_deathrun(){
 	set_cvar_num("sv_restart", 1);
 	set_cvar_string("mp_round_infinite", "b"); // b - block needed players round end check
 	//set_cvar_num("mp_falldamage", 1);
-
-	return PLUGIN_CONTINUE;
-}
-
-public players_check(){
-	if(g_bManualToggled)
-		return PLUGIN_CONTINUE;
-	
-	new players[MAX_PLAYERS], iNum;
-	get_players(players, iNum, "ch");
-	if(iNum<6)
-		GAMEMODE_VOTE_START();
 
 	return PLUGIN_CONTINUE;
 }

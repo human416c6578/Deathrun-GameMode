@@ -4,8 +4,8 @@ GAMEMODE_WON_MSG=&x04%s &x01won by &x04%d &x01votes!
 GAMEMODE_EQUAL_MSG=There was a &x07tie &x01between the two options!
 GAMEMODE_RANDOM_MSG=A &x07gamemode &x01will be chosen randomly!
 GAMEMODE_ACTIVATED_MSG=&x07%s gamemode &x01was activated!
-RTV_MSG=&x07%s &x01voted to change the gamemode in &x04%s&x01!
-RTV_VOTES_MSG=&x07%d &x01more votes needed!
+RTV_MSG=&x07%s &x01voted to change the gamemode in &x04%s&x01, &x07%d &x01more votes needed!
+RTV_OFF_MSG=&x07%s &x01changed his mind about the &x07%s &x01gamemode, &x07%d &x01more votes needed!
 
 [ro]
 VOTE_MSG=&x04%s &x01a votat pentru &x07%s&x01!
@@ -13,5 +13,5 @@ GAMEMODE_WON_MSG=&x07%s &x01a castigat cu &x04%d &x01voturi!
 GAMEMODE_EQUAL_MSG=A fost &x07egalitate &x01intre cele doua optiuni!
 GAMEMODE_RANDOM_MSG=Un &x07gamemode &x01o sa fie ales random!
 GAMEMODE_ACTIVATED_MSG=&x07%s gamemode &x01a fost activat!
-RTV_MSG=&x07%s &x01a votat pentru a schimba gamemode-ul in &x04%s&x01!
-RTV_VOTES_MSG=&x01Mai este nevoie de &x07%d &x01voturi!
+RTV_MSG=&x07%s &x01a votat pentru a schimba gamemode-ul in &x04%s&x01, mai este nevoie de &x07%d &x01voturi!
+RTV_OFF_MSG=&x07%s &x01s-a razgandit in privinta gamemode-ul &x07%s &x01, mai este nevoie de &x07%d &x01voturi!
