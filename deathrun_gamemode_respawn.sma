@@ -124,7 +124,7 @@ public votes_check(iVotes, iVotesNeeded){
 }
 
 public gamemode_toggle(id){
-	if(!(get_user_flags(id) & ADMIN_IMMUNITY))
+	if(!(get_user_flags(id) & ADMIN_BAN_TEMP)) // 'v' flag
 		return PLUGIN_HANDLED;
 
 	g_bManualToggled = !g_bManualToggled;
@@ -139,7 +139,7 @@ public gamemode_toggle(id){
 }
 
 public gamemode_start_vote(id){
-	if(!(get_user_flags(id) & ADMIN_IMMUNITY)) return PLUGIN_HANDLED;
+	if(!(get_user_flags(id) & ADMIN_BAN)) return PLUGIN_HANDLED; // 'd' flag
 
 	GAMEMODE_VOTE_START();
 
