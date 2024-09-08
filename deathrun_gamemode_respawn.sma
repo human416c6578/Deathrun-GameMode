@@ -38,7 +38,7 @@ public plugin_init( ) {
 	register_clcmd("deathrun_vote", "gamemode_start_vote");
 	//Command to toggle the gamemode
 	register_clcmd("deathrun_toggle","gamemode_toggle");
-	register_clcmd("say rtg", "player_vote");
+	register_clcmd("say", "player_vote");
 	RegisterHam(Ham_Killed, "player", "event_player_killed");
 	
 	g_hudObjectProgress = CreateHudSyncObj()
@@ -92,6 +92,8 @@ public player_vote(id) {
 	CC_SendMessage(0, "%L", LANG_PLAYER, g_bVoted[id]?"RTV_MSG":"RTV_OFF_MSG" ,szName, g_bEnabled?"&x06DEATHRUN":"&x07RESPAWN", iVotesNeeded);
 
 	votes_check(iVotes[0], iVotesNeeded);
+
+	return PLUGIN_HANDLED;
 }
 
 public calculate_votes_needed(iVotes[]){
