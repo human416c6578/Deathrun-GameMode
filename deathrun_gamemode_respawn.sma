@@ -86,19 +86,19 @@ public player_vote(id) {
 	new szName[64];
 	get_user_name(id, szName, charsmax(szName));
 
-	new iVotes = 0;
+	new iVotes[1];
 	new iVotesNeeded = calculate_votes_needed(iVotes);
 
-	CC_SendMessage(0, "%L", LANG_PLAYER, g_bVoted[id]?"RTV_MSG":"RTV_OFF_MSG" ,szName, g_bEnabled?"DEATHRUN":"RESPAWN", iVotesNeeded);
+	CC_SendMessage(0, "%L", LANG_PLAYER, g_bVoted[id]?"RTV_MSG":"RTV_OFF_MSG" ,szName, g_bEnabled?"&x06DEATHRUN":"&x07RESPAWN", iVotesNeeded);
 
-	votes_check(iVotes, iVotesNeeded);
+	votes_check(iVotes[0], iVotesNeeded);
 }
 
-public calculate_votes_needed(iVotes){
+public calculate_votes_needed(iVotes[]){
 	new iPlayers = 0;
 
 	for(new i;i<MAX_PLAYERS;i++){
-		iVotes += _:g_bVoted[i];
+		iVotes[0] += _:g_bVoted[i];
 
 		if(!is_user_connected(i)) continue;
 		if(is_user_bot(i)) continue;
