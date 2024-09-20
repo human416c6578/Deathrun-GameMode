@@ -10,7 +10,7 @@
 
 enum gamemodes{
 	DEATHRUN,
-	RESPAWN,
+	RESPAWN
 }
 
 //GAMEMODE VOTING
@@ -31,7 +31,7 @@ new g_pPlayersPercent;
 
 public plugin_init( ) {
 	register_plugin( "Deathrun Respawn Gamemode", "1.0", "MrShark45" );
-	
+
 	g_pPlayersPercent = create_cvar("gamemode_players_percent", "0.6", FCVAR_NONE, "Percent of players needed to vote to change the gamemode", true, 0.1, true, 1.0);
 
 	//Command to start the gamemode vote
@@ -117,9 +117,6 @@ public calculate_votes_needed(){
 }
 public votes_check(iVotes, iVotesNeeded){
 	if(iVotes >= iVotesNeeded){
-		for(new i;i<MAX_PLAYERS;i++)
-			g_bVoted[i] = false;
-
 		if(g_bEnabled)
 			gamemode_set_deathrun();
 		else
@@ -128,8 +125,13 @@ public votes_check(iVotes, iVotesNeeded){
 	}
 }
 
+public votes_reset(){
+	for(new i;i<MAX_PLAYERS;i++)
+			g_bVoted[i] = false;
+}
+
 public gamemode_toggle(id){
-	if(!(get_user_flags(id) & ADMIN_BAN_TEMP)) // 'v' flag
+	if(!(get_user_flags(id) & ADMIN_BAN_TEMP) && !(get_user_flags(id) & ADMIN_IMMUNITY)) // 'av' flag
 		return PLUGIN_HANDLED;
 
 	g_bManualToggled = !g_bManualToggled;
@@ -144,7 +146,7 @@ public gamemode_toggle(id){
 }
 
 public gamemode_start_vote(id){
-	if(!(get_user_flags(id) & ADMIN_BAN)) return PLUGIN_HANDLED; // 'd' flag
+	if(!(get_user_flags(id) & ADMIN_BAN) && !(get_user_flags(id) & ADMIN_IMMUNITY)) return PLUGIN_HANDLED; // 'ad' flag
 
 	GAMEMODE_VOTE_START();
 
@@ -251,10 +253,13 @@ public gamemode_set_respawn(){
 	if(g_bEnabled && !is_deathrun_enabled()) return PLUGIN_CONTINUE;
 	g_bEnabled = true;
 
+	votes_reset();
+
 	enable_deathrun(false);
 
 	set_cvar_num("mp_round_infinite", 1);
 	set_cvar_num("mp_falldamage", 0);
+	set_cvar_num("kz_mpbhop", 1);
 
 	move_players(CS_TEAM_CT);
 	respawn_players(CS_TEAM_CT);
@@ -267,11 +272,14 @@ public gamemode_set_deathrun(){
 	if(!g_bEnabled && is_deathrun_enabled()) return PLUGIN_CONTINUE;
 	g_bEnabled = false;
 
+	votes_reset();
+
 	enable_deathrun(true);
 
 	set_cvar_num("sv_restart", 1);
 	set_cvar_string("mp_round_infinite", "b"); // b - block needed players round end check
 	//set_cvar_num("mp_falldamage", 1);
+	set_cvar_num("kz_mpbhop", 0);
 
 	return PLUGIN_CONTINUE;
 }
