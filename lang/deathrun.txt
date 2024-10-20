@@ -1,5 +1,5 @@
 [en]
-DISCONNECT_MSG = The terrorist &x07%s& x01has disconnected.
+DISCONNECT_MSG = The terrorist &x07%s &x01has disconnected.
 NEW_TERRO_MSG = &x07%s &x01is the new &x07terrorist&x01.
 RESPAWN_END_MSG = Respawn Time has &x07ended&x01.
 
