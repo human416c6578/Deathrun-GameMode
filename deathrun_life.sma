@@ -1,7 +1,7 @@
 #include <amxmodx>
 #include <cstrike>
 #include <hamsandwich>
-#include <cromchat>
+#include <cromchat2>
 #include <deathrun>
 
 new g_iLives[MAX_PLAYERS];
@@ -19,7 +19,7 @@ public plugin_init() {
 
 	RegisterHam(Ham_Killed, "player", "player_killed");
 
-	CC_SetPrefix("&x04[LIFE]");
+	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_natives() {
