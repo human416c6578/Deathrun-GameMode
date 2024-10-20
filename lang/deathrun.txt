@@ -10,7 +10,7 @@ RESPAWN_END_MSG = Respawn Time &x07terminou&x01.
 
 [ro]
 DISCONNECT_MSG = &x07%s &x01s-a deconectat!
-NEW_TERRO_MSG = &x07%s &x01este noul &x0Tterorist&x01!
+NEW_TERRO_MSG = &x04%s &x01este noul &x07terorist&x01!
 RESPAWN_END_MSG = Timpul de respawn s-a &x07terminat&x01!
 
 [pt]
