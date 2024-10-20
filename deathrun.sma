@@ -50,7 +50,7 @@ public plugin_init( ) {
 	//Forwards
 	g_fwdEnableDeathrun = CreateMultiForward("forward_deathrun_enable", ET_IGNORE, FP_CELL);
 	
-	CC_SetPrefix("&x07[FWO]");
+	CC_SetPrefix("&x04[FWO]");
 
 }
 
@@ -285,7 +285,7 @@ public set_terro(id, bool:respawn) {
 	get_user_name(id, szName, charsmax(szName));
 	cs_set_user_team(id, CS_TEAM_T);
 	g_iLastTerro = id;
-	CC_SendMessage(0, "%l", 0, "NEW_TERRO_MSG", szName);
+	CC_SendMessage(0, "%l", "NEW_TERRO_MSG", szName);
 	g_iNextTerro = 0;
 	fm_strip_user_weapons(id);
 
@@ -297,7 +297,7 @@ public set_terro(id, bool:respawn) {
 
 public respawn_disable(){
 	g_bRespawnActive = false;
-	CC_SendMessage(0, "%l", 0, "RESPAWN_END_MSG");
+	CC_SendMessage(0, "%l", "RESPAWN_END_MSG");
 	remove_task(RESPAWN_TASKID);
 }
 

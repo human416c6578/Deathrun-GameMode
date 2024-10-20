@@ -44,7 +44,7 @@ public plugin_init( ) {
 	
 	g_hudObjectProgress = CreateHudSyncObj()
 
-	CC_SetPrefix("&x07[FWO]");
+	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_cfg() {
@@ -93,7 +93,7 @@ public player_vote(id) {
 
 	new iVotesNeeded = calculate_votes_needed();
 
-	CC_SendMessage(0, "%l", LANG_PLAYER, g_bVoted[id]?"RTV_MSG":"RTV_OFF_MSG" ,szName, g_bEnabled?"&x06DEATHRUN":"&x07RESPAWN", iVotesNeeded - iVotes);
+	CC_SendMessage(0, "%l", g_bVoted[id]?"RTV_MSG":"RTV_OFF_MSG" ,szName, g_bEnabled?"&x06DEATHRUN":"&x07RESPAWN", iVotesNeeded - iVotes);
 
 	votes_check(iVotes, iVotesNeeded);
 
@@ -201,7 +201,7 @@ public GAMEMODE_VOTE_HANDLER(id, menu, item){
 	new szName[32];
 	get_user_name(id, szName, 31);
 
-	CC_SendMessage(0, "%l", LANG_PLAYER, "VOTE_MSG" ,szName, item?"RESPAWN":"DEATHRUN");
+	CC_SendMessage(0, "%l", "VOTE_MSG" ,szName, item?"RESPAWN":"DEATHRUN");
 
 	g_iVotes[item]++;
 
@@ -214,16 +214,16 @@ public GAMEMODE_VOTE_END(){
 	g_bVoteInProgress = false;
 
 	if ( g_iVotes[DEATHRUN] > g_iVotes[RESPAWN] ){
-		CC_SendMessage(0, "%l", LANG_PLAYER, "GAMEMODE_WON_MSG", "Deathrun", g_iVotes[DEATHRUN]);
+		CC_SendMessage(0, "%l", "GAMEMODE_WON_MSG", "Deathrun", g_iVotes[DEATHRUN]);
 		gamemode_set_deathrun();
 	}
 	else if ( g_iVotes[DEATHRUN] < g_iVotes[RESPAWN] ){
-		CC_SendMessage(0, "%l", LANG_PLAYER, "GAMEMODE_WON_MSG", "Respawn", g_iVotes[RESPAWN]);
+		CC_SendMessage(0, "%l", "GAMEMODE_WON_MSG", "Respawn", g_iVotes[RESPAWN]);
 		gamemode_set_respawn();
 	}
 	else{
-		CC_SendMessage(0, "%l", LANG_PLAYER, "GAMEMODE_EQUAL_MSG");
-		CC_SendMessage(0, "%l", LANG_PLAYER, "GAMEMODE_RANDOM_MSG");
+		CC_SendMessage(0, "%l", "GAMEMODE_EQUAL_MSG");
+		CC_SendMessage(0, "%l", "GAMEMODE_RANDOM_MSG");
 
 		random(2)?gamemode_set_deathrun():gamemode_set_respawn();
 	}
@@ -249,7 +249,7 @@ public GAMEMODE_VOTE_PROGRESS(){
 }
 
 public gamemode_set_respawn(){
-	CC_SendMessage(0, "%l", LANG_PLAYER, "GAMEMODE_ACTIVATED_MSG", "Respawn");
+	CC_SendMessage(0, "%l", "GAMEMODE_ACTIVATED_MSG", "Respawn");
 	if(g_bEnabled && !is_deathrun_enabled()) return PLUGIN_CONTINUE;
 	g_bEnabled = true;
 
@@ -268,7 +268,7 @@ public gamemode_set_respawn(){
 }
 
 public gamemode_set_deathrun(){
-	CC_SendMessage(0, "%l", LANG_PLAYER, "GAMEMODE_ACTIVATED_MSG", "Deathrun");
+	CC_SendMessage(0, "%l", "GAMEMODE_ACTIVATED_MSG", "Deathrun");
 	if(!g_bEnabled && is_deathrun_enabled()) return PLUGIN_CONTINUE;
 	g_bEnabled = false;
 
