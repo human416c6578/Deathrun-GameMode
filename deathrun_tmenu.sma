@@ -37,7 +37,7 @@ public GiveXmas(id){
 }
 
 public ShowMenu(id){
-    new menu = menu_create( "\rTerrorist Menu!:", "menu_handler" );
+    new menu = menu_create( "\r[FWO] \d- \wMenu Terrorista", "menu_handler" );
 
     menu_additem( menu, "\wDeagle", "", 0 );
     menu_additem( menu, "\w200Hp", "", 0 );
