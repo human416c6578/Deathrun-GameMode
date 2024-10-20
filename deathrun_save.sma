@@ -133,7 +133,7 @@ public SetPosition(id){
 
 public SaveStart(id){
 	if (!is_user_alive(id)){
-		CC_SendMessage(id, "%L",id, "MSG_NOT_ALIVE");
+		CC_SendMessage(id, "%L", id, "MSG_NOT_ALIVE");
 		//CC_SendMessage(id, "&x01Você precisa estar vivo para usar este comando.");
 		return PLUGIN_HANDLED;
 	}

@@ -90,7 +90,7 @@ public life_use(id){
 		return PLUGIN_HANDLED;
 	}
 	if(get_ct_alive() < 2){
-		client_print(id,print_chat, "%L", id, "DENY_REVIVE_ALIVE_MSG");
+		CC_SendMessage(id, "%L", id, "DENY_REVIVE_ALIVE_MSG");
 		return PLUGIN_HANDLED;
 	}
 	if(!g_iExtraLives[id] && !g_iLives[id]) {
