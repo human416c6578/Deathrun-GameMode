@@ -1,109 +1,120 @@
 [en]
 
+RTV_MSG=&x06%s &x01voted to change the gamemode in %s&x01, &x04%d &x01more votes needed.
+RTV_OFF_MSG=&x06%s &x01changed his mind about the %s &x01gamemode, &x04%d &x01more votes needed.
 VOTE_MSG = &x04%s &x01voted for &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01won by &x04%d &x01votes.
 GAMEMODE_EQUAL_MSG = There was a &x07tie &x01between the two options.
 GAMEMODE_RANDOM_MSG = A &x07gamemode &x01will be chosen randomly.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Votes^nRespawn %d votes^n^nTime remaining to vote %d seconds
 GAMEMODE_ACTIVATED_MSG = &x07%s gamemode &x01was activated.
-RTV_MSG=&x06%s &x01voted to change the gamemode in %s&x01, &x04%d &x01more votes needed.
-RTV_OFF_MSG=&x06%s &x01changed his mind about the %s &x01gamemode, &x04%d &x01more votes needed.
 
 [bp]
 
+RTV_MSG = &x06%s &x01votou para mudar o modo de jogo em %s&x01, &x04%d &x01votos a mais são necessários.
+RTV_OFF_MSG = &x06%s &x01mudou de ideia sobre o modo de jogo %s&x01, &x04%d &x01votos a mais são necessários.
 VOTE_MSG = &x04%s &x01votou em &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01ganhou com &x04%d &x01votos.
 GAMEMODE_EQUAL_MSG = Houve um &x07empate &x01entre as duas opções.
 GAMEMODE_RANDOM_MSG = Um &x07gamemode &x01será escolhido aleatoriamente.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d votos^nRespawn %d votos^n^nTempo restante de votação %d segundos
 GAMEMODE_ACTIVATED_MSG = &x07%s gamemode &x01foi ativo.
-RTV_MSG = &x06%s &x01votou para mudar o modo de jogo em %s&x01, &x04%d &x01votos a mais são necessários.
-RTV_OFF_MSG = &x06%s &x01mudou de ideia sobre o modo de jogo %s&x01, &x04%d &x01votos a mais são necessários.
 
 [ro]
 
+RTV_MSG = &x06%s &x01a votat pentru %s&x01, mai trebuie &x04%d &x01voturi!
+RTV_OFF_MSG = &x06%s &x01a retras votul pentru %s&x01, mai trebuie &x04%d &x01voturi!
 VOTE_MSG = &x04%s &x01a votat pentru &x07%s&x01!
 GAMEMODE_WON_MSG = &x07%s &x01a castigat cu &x04%d &x01voturi!
 GAMEMODE_EQUAL_MSG = A fost &x07egalitate &x01intre cele doua optiuni!
 GAMEMODE_RANDOM_MSG = Un &x07gamemode &x01o sa fie ales random!
+GAMEMODE_VOTE_HUD_MSG = DEATHRUN %d Voturi^nRESPAWN %d Voturi^n^nTimp de vot ramas %d secunde
 GAMEMODE_ACTIVATED_MSG = &x07%s gamemode &x01a fost activat!
-RTV_MSG = &x06%s &x01a votat pentru %s&x01, mai trebuie &x04%d &x01voturi!
-RTV_OFF_MSG = &x06%s &x01a retras votul pentru %s&x01, mai trebuie &x04%d &x01voturi!
 
 [pt]
 
+RTV_MSG = &x06%s &x01votou para mudar o modo de jogo em %s&x01, &x04%d &x01votos a mais são necessários.
+RTV_OFF_MSG = &x06%s &x01mudou de ideia sobre o modo de jogo %s&x01, &x04%d &x01votos a mais são necessários.
 VOTE_MSG = &x04%s &x01votou em &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01ganhou com &x04%d &x01votos.
 GAMEMODE_EQUAL_MSG = Houve um &x07empate &x01entre as duas opções.
 GAMEMODE_RANDOM_MSG = Um &x07gamemode &x01será escolhido aleatoriamente.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d votos^nRespawn %d votos^n^nTempo restante de votação %d segundos
 GAMEMODE_ACTIVATED_MSG = &x07%s gamemode &x01foi ativo.
-RTV_MSG = &x06%s &x01votou para mudar o modo de jogo em %s&x01, &x04%d &x01votos a mais são necessários.
-RTV_OFF_MSG = &x06%s &x01mudou de ideia sobre o modo de jogo %s&x01, &x04%d &x01votos a mais são necessários.
 
 [fr]
 
+RTV_MSG = &x06%s &x01a voté pour changer le mode de jeu en %s&x01, &x04%d &x01votes supplémentaires sont nécessaires.
+RTV_OFF_MSG = &x06%s &x01a changé d'avis sur le mode de jeu %s&x01, &x04%d &x01votes supplémentaires sont nécessaires.
 VOTE_MSG = &x04%s &x01a voté pour &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01a gagné avec &x04%d &x01votes.
 GAMEMODE_EQUAL_MSG = Il y a eu une &x07égalité &x01entre les deux options.
 GAMEMODE_RANDOM_MSG = Un &x07gamemode &x01sera choisi au hasard.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Votes^nRespawn %d votes^n^nTemps restant pour voter %d secondes
 GAMEMODE_ACTIVATED_MSG = Le gamemode &x07%s &x01a été activé.
-RTV_MSG = &x06%s &x01a voté pour changer le mode de jeu en %s&x01, &x04%d &x01votes supplémentaires sont nécessaires.
-RTV_OFF_MSG = &x06%s &x01a changé d'avis sur le mode de jeu %s&x01, &x04%d &x01votes supplémentaires sont nécessaires.
 
 [es]
 
+RTV_MSG = &x06%s &x01votó para cambiar el modo de juego en %s&x01, &x04%d &x01votos más son necesarios.
+RTV_OFF_MSG = &x06%s &x01cambió de opinión sobre el modo de juego %s&x01, &x04%d &x01votos más son necesarios.
 VOTE_MSG = &x04%s &x01votó por &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01ganó con &x04%d &x01votos.
 GAMEMODE_EQUAL_MSG = Hubo un &x07empate &x01entre las dos opciones.
 GAMEMODE_RANDOM_MSG = Se elegirá un &x07gamemode &x01al azar.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Votos^nRespawn %d votos^n^nTiempo restante para votar %d segundos
 GAMEMODE_ACTIVATED_MSG = Se ha activado el gamemode &x07%s&x01.
-RTV_MSG = &x06%s &x01votó para cambiar el modo de juego en %s&x01, &x04%d &x01votos más son necesarios.
-RTV_OFF_MSG = &x06%s &x01cambió de opinión sobre el modo de juego %s&x01, &x04%d &x01votos más son necesarios.
 
 [ru]
 
+RTV_MSG = &x06%s &x01проголосовал за смену режима игры на %s&x01, &x04%d &x01голосов еще требуется.
+RTV_OFF_MSG = &x06%s &x01передумал по поводу режима игры %s&x01, &x04%d &x01голосов еще требуется.
 VOTE_MSG = &x04%s &x01проголосовал за &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01победил с &x04%d &x01голосами.
 GAMEMODE_EQUAL_MSG = Произошло &x07равенство &x01между двумя вариантами.
 GAMEMODE_RANDOM_MSG = Будет выбран &x07gamemode &x01случайным образом.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Голосов^nRespawn %d голосов^n^nОсталось времени для голосования: %d секунд
 GAMEMODE_ACTIVATED_MSG = Активирован &x07%s &x01gamemode.
-RTV_MSG = &x06%s &x01проголосовал за смену режима игры на %s&x01, &x04%d &x01голосов еще требуется.
-RTV_OFF_MSG = &x06%s &x01передумал по поводу режима игры %s&x01, &x04%d &x01голосов еще требуется.
 
 [pl]
 
+RTV_MSG = &x06%s &x01zagłosował, aby zmienić tryb gry na %s&x01, &x04%d &x01głosów więcej jest potrzebnych.
+RTV_OFF_MSG = &x06%s &x01zmienił zdanie na temat trybu gry %s&x01, &x04%d &x01głosów więcej jest potrzebnych.
 VOTE_MSG = &x04%s &x01zagłosował na &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01wygrał z &x04%d &x01głosami.
 GAMEMODE_EQUAL_MSG = Był &x07remis &x01między tymi dwoma opcjami.
 GAMEMODE_RANDOM_MSG = &x07Gamemode &x01zostanie wybrany losowo.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Głosów^nRespawn %d głosów^n^nPozostały czas na głosowanie: %d sekund
 GAMEMODE_ACTIVATED_MSG = &x07%s gamemode &x01został aktywowany.
-RTV_MSG = &x06%s &x01zagłosował, aby zmienić tryb gry na %s&x01, &x04%d &x01głosów więcej jest potrzebnych.
-RTV_OFF_MSG = &x06%s &x01zmienił zdanie na temat trybu gry %s&x01, &x04%d &x01głosów więcej jest potrzebnych.
 
 [bg]
 
+RTV_MSG = &x06%s &x01гласува да смени режима на игра на %s&x01, &x04%d &x01гласа повече са нужни.
+RTV_OFF_MSG = &x06%s &x01си промени мнението за режима на игра %s&x01, &x04%d &x01гласа повече са нужни.
 VOTE_MSG = &x04%s &x01гласува за &x07%s&x01.
 GAMEMODE_WON_MSG = &x04%s &x01печели с &x04%d &x01гласа.
 GAMEMODE_EQUAL_MSG = Има &x07равенство &x01между двете възможности.
 GAMEMODE_RANDOM_MSG = Ще бъде избран &x07гамод &x01на случаен принцип.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Гласа^nRespawn %d гласа^n^nОставащо време за гласуване: %d секунди
 GAMEMODE_ACTIVATED_MSG = Активиран е &x07%s &x01гамод.
-RTV_MSG = &x06%s &x01гласува да смени режима на игра на %s&x01, &x04%d &x01гласа повече са нужни.
-RTV_OFF_MSG = &x06%s &x01си промени мнението за режима на игра %s&x01, &x04%d &x01гласа повече са нужни.
 
 [tr]
 
+RTV_MSG = &x06%s &x01oy vererek %s&x01 oyun modunu değiştirmeye karar verdi, &x04%d &x01daha fazla oy gerekli.
+RTV_OFF_MSG = &x06%s &x01oyun modu %s&x01 hakkında fikrini değiştirdi, &x04%d &x01daha fazla oy gerekli.
 VOTE_MSG = &x04%s &x01&x07%s&x01 için oy kullandı.
 GAMEMODE_WON_MSG = &x04%s &x01&x04%d &x01oyla kazandı.
 GAMEMODE_EQUAL_MSG = İki seçenek arasında &x07beraberlik &x01oldu.
 GAMEMODE_RANDOM_MSG = Bir &x07gamemode &x01rastgele seçilecek.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Oy^nRespawn %d oy^n^nOy vermek için kalan süre %d saniye
 GAMEMODE_ACTIVATED_MSG = &x07%s gamemode &x01etkinleştirildi.
-RTV_MSG = &x06%s &x01oy vererek %s&x01 oyun modunu değiştirmeye karar verdi, &x04%d &x01daha fazla oy gerekli.
-RTV_OFF_MSG = &x06%s &x01oyun modu %s&x01 hakkında fikrini değiştirdi, &x04%d &x01daha fazla oy gerekli.
 
 [de]
 
+RTV_MSG = &x06%s &x01hat für eine Änderung des Spielmodus in %s&x01 gestimmt, &x04%d &x01weitere Stimmen werden benötigt.
+RTV_OFF_MSG = &x06%s &x01hat seine Meinung über den Spielmodus %s&x01 geändert, &x04%d &x01weitere Stimmen werden benötigt.
 VOTE_MSG = &x04%s &x01hat für &x07%s&x01 gestimmt.
 GAMEMODE_WON_MSG = &x04%s &x01hat mit &x04%d &x01Stimmen gewonnen.
 GAMEMODE_EQUAL_MSG = Es gab eine &x07Unentschieden &x01zwischen den beiden Optionen.
 GAMEMODE_RANDOM_MSG = Ein &x07gamemode &x01wird zufällig ausgewählt.
+GAMEMODE_VOTE_HUD_MSG = Deathrun %d Stimmen^nRespawn %d stimmen^n^nVerbleibende Zeit zum Abstimmen: %d Sekunden
 GAMEMODE_ACTIVATED_MSG = Der &x07%s gamemode &x01wurde aktiviert.
-RTV_MSG = &x06%s &x01hat für eine Änderung des Spielmodus in %s&x01 gestimmt, &x04%d &x01weitere Stimmen werden benötigt.
-RTV_OFF_MSG = &x06%s &x01hat seine Meinung über den Spielmodus %s&x01 geändert, &x04%d &x01weitere Stimmen werden benötigt.

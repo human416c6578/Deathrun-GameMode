@@ -244,7 +244,8 @@ public GAMEMODE_VOTE_PROGRESS(){
 	for ( new i; i < pnum; i++ )
 	{
 		tempid = players[i];
-		ShowSyncHudMsg(tempid, g_hudObjectProgress, "Deathrun %d votos^nRespawn %d votos^n^nTempo restante de votação %d segundos", g_iVotes[DEATHRUN], g_iVotes[RESPAWN], floatround(g_fVoteTime));
+		ShowSyncHudMsg(tempid, g_hudObjectProgress, "%L", LANG_PLAYER, "GAMEMODE_VOTE_HUD_MSG", g_iVotes[DEATHRUN], g_iVotes[RESPAWN], floatround(g_fVoteTime));
+		//ShowSyncHudMsg(tempid, g_hudObjectProgress, "Deathrun %d votos^nRespawn %d votos^n^nTempo restante de votação %d segundos", g_iVotes[DEATHRUN], g_iVotes[RESPAWN], floatround(g_fVoteTime));
 	}
 }
 
