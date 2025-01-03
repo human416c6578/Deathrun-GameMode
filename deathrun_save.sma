@@ -7,6 +7,7 @@
 #include <deathrun>
 #include <deathrun_life>
 #include <timer>
+#include <cromchat2>
 
 #define VERSION		"1.0"
 
@@ -31,12 +32,19 @@ public plugin_init()
 
 	RegisterHam(Ham_Spawn, "player", "player_spawn");
 	RegisterHam(Ham_Killed, "player", "player_killed", 1);
+
+	//Chat prefix
+	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_natives() {
 	register_library("save");
 
 	register_native("reset_save", "_reset_save");
+}
+
+public plugin_cfg() {
+	register_dictionary("deathrun_save.txt");
 }
 
 public _reset_save(plugin_id, argc) {
@@ -124,9 +132,16 @@ public SetPosition(id){
 }
 
 public SaveStart(id){
+	if (!is_user_alive(id)){
+		CC_SendMessage(id, "%L", id, "MSG_NOT_ALIVE");
+		//CC_SendMessage(id, "&x01Você precisa estar vivo para usar este comando.");
+		return PLUGIN_HANDLED;
+	}
+
 	if(used[id]){
-		client_print(id, print_chat, "Trebuie sa iti resetezi save-ul pentru a salva din nou!");
-		client_print(id, print_chat, "Foloseste comanda [/reset]!");
+		CC_SendMessage(id, "%L", id, "MSG_SAVE");
+		//client_print(id, print_chat, "Trebuie sa iti resetezi save-ul pentru a salva din nou!");
+		//client_print(id, print_chat, "Foloseste comanda [/reset]!");
 		return PLUGIN_HANDLED;
 	}
 
@@ -161,4 +176,3 @@ stock SetUserAgl(id,Float:agl[3]){
 	entity_set_vector(id,EV_VEC_angles,agl)
 	entity_set_int(id,EV_INT_fixangle,1)
 }
-

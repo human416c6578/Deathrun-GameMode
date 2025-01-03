@@ -1,7 +1,7 @@
 #include <amxmodx>
 #include <cstrike>
 #include <hamsandwich>
-#include <cromchat>
+#include <cromchat2>
 #include <deathrun>
 
 new g_iLives[MAX_PLAYERS];
@@ -19,7 +19,7 @@ public plugin_init() {
 
 	RegisterHam(Ham_Killed, "player", "player_killed");
 
-	CC_SetPrefix("&x04[LIFE]");
+	CC_SetPrefix("&x04[FWO]");
 }
 
 public plugin_natives() {
@@ -90,7 +90,7 @@ public life_use(id){
 		return PLUGIN_HANDLED;
 	}
 	if(get_ct_alive() < 2){
-		client_print(id,print_chat, "%L", id, "DENY_REVIVE_ALIVE_MSG");
+		CC_SendMessage(id, "%L", id, "DENY_REVIVE_ALIVE_MSG");
 		return PLUGIN_HANDLED;
 	}
 	if(!g_iExtraLives[id] && !g_iLives[id]) {
