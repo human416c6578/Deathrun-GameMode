@@ -1,54 +1,58 @@
 [en]
 
 MSG_NOT_ALIVE = &x01You must be alive to use this command.
-MSG_SAVE = &x01You need to use the command &x06/reset&x01 to use&x06 /save&x01 again.
+MSG_USED = &x01You need to use the command &x06/reset&x01 to use&x06 /save&x01 again.
+MSG_OUTSIDE_ZONE = &x01You must be inside the start zone to use this command.
+MSG_SPEED = &x01You must stay still in order to use this command.
 
 [bp]
 
 MSG_NOT_ALIVE = &x01Você precisa estar vivo para usar este comando.
-MSG_SAVE = &x01Você precisa usar o comando&x06 /reset&x01 para usar&x06 /save&x01 novamente.
+MSG_USED = &x01Você precisa usar o comando&x06 /reset&x01 para usar&x06 /save&x01 novamente.
 
 [pt]
 
 MSG_NOT_ALIVE = &x01Você precisa estar vivo para usar este comando.
-MSG_SAVE = &x01Você precisa usar o comando&x06 /reset&x01 para usar&x06 /save&x01 novamente.
+MSG_USED = &x01Você precisa usar o comando&x06 /reset&x01 para usar&x06 /save&x01 novamente.
 
 [ro]
 
 MSG_NOT_ALIVE = &x01Trebuie să fii în viață pentru a folosi această comandă.
-MSG_SAVE = &x01Trebuie să folosești comanda&x06 /reset&x01 pentru a folosi din nou&x06 /save.
+MSG_USED = &x01Trebuie să folosești comanda&x06 /reset&x01 pentru a folosi din nou&x06 /save.
+MSG_OUTSIDE_ZONE = &x01Trebuie să fii în interiorul zonei de start pentru a folosi această comandă.
+MSG_SPEED = &x01Trebuie să stai pe loc pentru a folosi această comandă.
 
 [es]
 
 MSG_NOT_ALIVE = &x01Debes estar vivo para usar este comando.
-MSG_SAVE = &x01Necesitas usar el comando&x06 /reset&x01 para usar&x06 /save&x01 nuevamente.
+MSG_USED = &x01Necesitas usar el comando&x06 /reset&x01 para usar&x06 /save&x01 nuevamente.
 
 [fr]
 
 MSG_NOT_ALIVE = &x01Vous devez être en vie pour utiliser cette commande.
-MSG_SAVE = &x01Vous devez utiliser la commande&x06 /reset&x01 pour utiliser à nouveau&x06 /save.
+MSG_USED = &x01Vous devez utiliser la commande&x06 /reset&x01 pour utiliser à nouveau&x06 /save.
 
 [ru]
 
 MSG_NOT_ALIVE = &x01Вы должны быть живым, чтобы использовать эту команду.
-MSG_SAVE = &x01Вам нужно использовать команду&x06 /reset&x01, чтобы снова использовать&x06 /save.
+MSG_USED = &x01Вам нужно использовать команду&x06 /reset&x01, чтобы снова использовать&x06 /save.
 
 [pl]
 
 MSG_NOT_ALIVE = &x01Musisz być żywy, aby użyć tego polecenia.
-MSG_SAVE = &x01Musisz użyć polecenia&x06 /reset&x01, aby ponownie użyć&x06 /save.
+MSG_USED = &x01Musisz użyć polecenia&x06 /reset&x01, aby ponownie użyć&x06 /save.
 
 [bg]
 
 MSG_NOT_ALIVE = &x01Трябва да сте живи, за да използвате тази команда.
-MSG_SAVE = &x01Трябва да използвате командата&x06 /reset&x01, за да използвате отново&x06 /save.
+MSG_USED = &x01Трябва да използвате командата&x06 /reset&x01, за да използвате отново&x06 /save.
 
 [tr]
 
 MSG_NOT_ALIVE = &x01Bu komutu kullanmak için yaşamalısınız.
-MSG_SAVE = &x06/save&x01 komutunu tekrar kullanmak için&x06 /reset&x01 komutunu kullanmanız gerekiyor.
+MSG_USED = &x06/save&x01 komutunu tekrar kullanmak için&x06 /reset&x01 komutunu kullanmanız gerekiyor.
 
 [de]
 
 MSG_NOT_ALIVE = &x01Du musst am Leben sein, um diesen Befehl zu verwenden.
-MSG_SAVE = &x01Du musst den Befehl &x06/reset&x01 verwenden, um &x06/save&x01 erneut zu verwenden.
+MSG_USED = &x01Du musst den Befehl &x06/reset&x01 verwenden, um &x06/save&x01 erneut zu verwenden.

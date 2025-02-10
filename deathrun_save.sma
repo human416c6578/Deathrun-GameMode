@@ -133,17 +133,24 @@ public SetPosition(id){
 
 public SaveStart(id){
 	if(used[id]){
-		CC_SendMessage(id, "%L", id, "MSG_SAVE");
-		//client_print(id, print_chat, "Trebuie sa iti resetezi save-ul pentru a salva din nou!");
-		//client_print(id, print_chat, "Foloseste comanda [/reset]!");
+		CC_SendMessage(id, "%L", id, "MSG_USED");
 		return PLUGIN_HANDLED;
 	}
 	
-	if(get_user_rule_speedrun(id) && !entity_intersects(id, get_entity_start())){
-		client_print(id, print_chat, "Trebuie sa fii in zona de start pentru a folosi aceasta comanda!");
-		return PLUGIN_HANDLED;
+	if(get_user_rule_speedrun(id)){
+		if(!entity_intersects(id, get_entity_start())){
+			CC_SendMessage(id, "%L", id, "MSG_OUTSIDE_ZONE");
+			return PLUGIN_HANDLED;
+		}
+
+		if(get_speed(id)){
+			CC_SendMessage(id, "%L", id, "MSG_SPEED");
+			return PLUGIN_HANDLED;
+		}
 	}
 
+	
+	
 	pev(id, pev_origin, start_position[id]);
 	entity_get_vector(id, EV_VEC_angles, start_angles[id])
 	start_angles[id][0] /= -3.0;
