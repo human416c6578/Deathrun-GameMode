@@ -1,5 +1,3 @@
-#pragma reqlib "timer"
-
 forward timer_player_started(id);
 forward timer_player_finished(id);
 forward timer_player_record(id);
@@ -21,6 +19,9 @@ native get_user_best(id);
 // sets name as category name
 native get_user_category(id, name[], len);
 
+native get_user_rule_bhop(id);
+native get_user_rule_speedrun(id);
+
 /*
     // get_categories_enabled(data[], len)
     writes into data all categories enabled separated by a comma(,)
@@ -28,3 +29,6 @@ native get_user_category(id, name[], len);
 
 native get_categories_enabled(data[], len);
 native get_category_name(id, name[], len);
+
+native get_entity_start();
+native get_entity_finish();

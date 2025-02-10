@@ -30,7 +30,7 @@ public plugin_init( ) {
 
 	//Cvars
 	//How many seconds the respawn is active
-	g_pcvarRespawnTime = register_cvar("respawn_time","30.0");
+	g_pcvarRespawnTime = register_cvar("respawn_time","50.0");
 
 	//Commands
 	register_clcmd("say /usp","give_usp_cmd");

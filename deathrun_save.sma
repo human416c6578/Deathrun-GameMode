@@ -124,9 +124,19 @@ public SetPosition(id){
 }
 
 public SaveStart(id){
+	if(!is_user_alive(id)){
+		client_print(id, print_chat, "Trebuie sa fii in viata pentru a folosi aceasta comanda!");
+		return PLUGIN_HANDLED;
+	}
+
 	if(used[id]){
 		client_print(id, print_chat, "Trebuie sa iti resetezi save-ul pentru a salva din nou!");
 		client_print(id, print_chat, "Foloseste comanda [/reset]!");
+		return PLUGIN_HANDLED;
+	}
+	
+	if(get_user_rule_speedrun(id) && !entity_intersects(id, get_entity_start())){
+		client_print(id, print_chat, "Trebuie sa fii in zona de start pentru a folosi aceasta comanda!");
 		return PLUGIN_HANDLED;
 	}
 
