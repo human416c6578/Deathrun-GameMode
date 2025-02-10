@@ -1,7 +1,60 @@
 [en]
-NEW_TERRO_MSG=&x04%s &x01is the new &x07terrorist&x01!
-RESPAWN_END_MSG=Respawn Time has &x07ended&x01!
+DISCONNECT_MSG = The terrorist &x07%s &x01has disconnected.
+NEW_TERRO_MSG = &x07%s &x01is the new &x07terrorist&x01.
+RESPAWN_END_MSG = Respawn Time has &x07ended&x01.
+
+[bp]
+DISCONNECT_MSG = O terrorista &x07%s &x01se desconectou.
+NEW_TERRO_MSG = &x07%s &x01é o novo &x07terrorista&x01.
+RESPAWN_END_MSG = Respawn Time &x07terminou&x01.
 
 [ro]
-NEW_TERRO_MSG=&x04%s &x01este noul &x07terorist&x01!
-RESPAWN_END_MSG=Timpul de respawn s-a &x07terminat&x01!
+DISCONNECT_MSG = &x07%s &x01s-a deconectat!
+NEW_TERRO_MSG = &x04%s &x01este noul &x07terorist&x01!
+RESPAWN_END_MSG = Timpul de respawn s-a &x07terminat&x01!
+
+[pt]
+DISCONNECT_MSG = O terrorista &x07%s &x01se desconectou.
+NEW_TERRO_MSG = &x07%s &x01é o novo &x07terrorista&x01.
+RESPAWN_END_MSG = Respawn Time &x07terminou&x01.
+
+[fr]
+DISCONNECT_MSG = Le terroriste &x07%s &x01s'est déconnecté.
+NEW_TERRO_MSG = &x07%s &x01est le nouveau &x07terroriste&x01.
+RESPAWN_END_MSG = Le temps de respawn est &x07terminé&x01.
+
+[es]
+
+DISCONNECT_MSG = El terrorista &x07%s &x01se ha desconectado.
+NEW_TERRO_MSG = &x07%s &x01es el nuevo &x07terrorista&x01.
+RESPAWN_END_MSG = El tiempo de reaparición ha &x07terminado&x01.
+
+[ru]
+
+DISCONNECT_MSG = &x07%s &x01террорист отключился.
+NEW_TERRO_MSG = &x07%s &x01новый &x07террорист&x01.
+RESPAWN_END_MSG = Время респауна &x07закончилось&x01.
+
+[pl]
+
+DISCONNECT_MSG = Terrorysta &x07%s &x01rozłączył się.
+NEW_TERRO_MSG = &x07%s &x01jest nowym &x07terrorystą&x01.
+RESPAWN_END_MSG = Czas respawnu &x07zakończył się&x01.
+
+[bg]
+
+DISCONNECT_MSG = Терористът &x07%s &x01се отключи.
+NEW_TERRO_MSG = &x07%s &x01е нов &x07терорист&x01.
+RESPAWN_END_MSG = Времето за респаун &x07завърши&x01.
+
+[tr]
+
+DISCONNECT_MSG = &x07%s &x01terörist bağlantısı kesildi.
+NEW_TERRO_MSG = &x07%s &x01yeni &x07terörist&x01.
+RESPAWN_END_MSG = Yeniden doğma süresi &x07sona erdi&x01.
+
+[de]
+
+DISCONNECT_MSG = Der Terrorist &x07%s &x01hat die Verbindung unterbrochen.
+NEW_TERRO_MSG = &x07%s &x01ist der neue &x07Terrorist&x01.
+RESPAWN_END_MSG = Die Wiederbelebungszeit ist &x07abgelaufen&x01.

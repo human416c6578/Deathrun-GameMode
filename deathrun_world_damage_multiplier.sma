@@ -2,7 +2,6 @@
 #include <cstrike>
 #include <hamsandwich>
 #include <fun>
-#include <cromchat>
 
 new g_StartHealth[33];
 
