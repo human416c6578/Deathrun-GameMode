@@ -19,7 +19,7 @@ public plugin_init() {
 
 	RegisterHam(Ham_Killed, "player", "player_killed");
 
-	CC_SetPrefix("&x04[FWO]");
+	CC_SetPrefix("&x04[DR]");
 }
 
 public plugin_natives() {

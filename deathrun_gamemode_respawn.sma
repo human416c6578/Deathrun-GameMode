@@ -44,7 +44,7 @@ public plugin_init( ) {
 	
 	g_hudObjectProgress = CreateHudSyncObj()
 
-	CC_SetPrefix("&x04[FWO]");
+	CC_SetPrefix("&x04[DR]");
 }
 
 public plugin_cfg() {
@@ -181,7 +181,7 @@ public GAMEMODE_VOTE_START(){
 public GAMEMODE_VOTE_MENU(id){
 	if(!is_user_connected(id))
 		return PLUGIN_HANDLED;
-	new menu = menu_create( "\r[FWO] \d- \wModo de Jogo", "GAMEMODE_VOTE_HANDLER" );
+	new menu = menu_create( "\r[FWO] \d- \wGameMode", "GAMEMODE_VOTE_HANDLER" );
 
 	menu_additem( menu, "\wDeathrun", "", 0 );
 	menu_additem( menu, "\wRespawn", "", 0 );

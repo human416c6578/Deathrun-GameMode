@@ -50,7 +50,7 @@ public plugin_init( ) {
 	//Forwards
 	g_fwdEnableDeathrun = CreateMultiForward("forward_deathrun_enable", ET_IGNORE, FP_CELL);
 	
-	CC_SetPrefix("&x04[FWO]");
+	CC_SetPrefix("&x04[DR]");
 
 }
 

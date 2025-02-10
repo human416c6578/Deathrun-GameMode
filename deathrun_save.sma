@@ -34,7 +34,7 @@ public plugin_init()
 	RegisterHam(Ham_Killed, "player", "player_killed", 1);
 
 	//Chat prefix
-	CC_SetPrefix("&x04[FWO]");
+	CC_SetPrefix("&x04[DR]");
 }
 
 public plugin_natives() {
