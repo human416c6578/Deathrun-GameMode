@@ -139,7 +139,6 @@ public client_disconnected(id){
 		new szName[32];
 		get_user_name(id, szName, charsmax(szName));
 		CC_SendMessage(0, "%l", "DISCONNECT_MSG", szName);
-		//CC_SendMessage(0, "&x07%s &x01 s-a deconectat!", szName);
 		terrorist_pick(true);
 	}
 }
