@@ -1,58 +1,76 @@
 [en]
 
-MSG_NOT_ALIVE = &x01You must be alive to use this command.
 MSG_USED = &x01You need to use the command &x06/reset&x01 to use&x06 /save&x01 again.
-MSG_OUTSIDE_ZONE = &x01You must be inside the start zone to use this command.
-MSG_SPEED = &x01You must stay still in order to use this command.
+MSG_NOT_ALIVE = &x01You must be alive to use this command.
+MSG_OUTSIDE_ZONE = You must be inside the start zone to use this command.
+MSG_SPEED = You must stay still in order to use this command.
 
 [bp]
 
-MSG_NOT_ALIVE = &x01Você precisa estar vivo para usar este comando.
 MSG_USED = &x01Você precisa usar o comando&x06 /reset&x01 para usar&x06 /save&x01 novamente.
+MSG_NOT_ALIVE = &x01Você precisa estar vivo para usar este comando.
+MSG_OUTSIDE_ZONE = Você deve estar dentro da zona de início para usar este comando.  
+MSG_SPEED = Você deve ficar parado para usar este comando.  
 
 [pt]
 
-MSG_NOT_ALIVE = &x01Você precisa estar vivo para usar este comando.
 MSG_USED = &x01Você precisa usar o comando&x06 /reset&x01 para usar&x06 /save&x01 novamente.
+MSG_NOT_ALIVE = &x01Você precisa estar vivo para usar este comando.
+MSG_OUTSIDE_ZONE = Você deve estar dentro da zona de início para usar este comando.  
+MSG_SPEED = Você deve ficar parado para usar este comando.  
 
 [ro]
 
-MSG_NOT_ALIVE = &x01Trebuie să fii în viață pentru a folosi această comandă.
 MSG_USED = &x01Trebuie să folosești comanda&x06 /reset&x01 pentru a folosi din nou&x06 /save.
-MSG_OUTSIDE_ZONE = &x01Trebuie să fii în interiorul zonei de start pentru a folosi această comandă.
-MSG_SPEED = &x01Trebuie să stai pe loc pentru a folosi această comandă.
+MSG_NOT_ALIVE = &x01Trebuie să fii în viață pentru a folosi această comandă.
+MSG_OUTSIDE_ZONE = Trebuie să fii în interiorul zonei de start pentru a folosi această comandă.
+MSG_SPEED = Trebuie să stai pe loc pentru a folosi această comandă.
 
 [es]
 
-MSG_NOT_ALIVE = &x01Debes estar vivo para usar este comando.
 MSG_USED = &x01Necesitas usar el comando&x06 /reset&x01 para usar&x06 /save&x01 nuevamente.
+MSG_NOT_ALIVE = &x01Debes estar vivo para usar este comando.
+MSG_OUTSIDE_ZONE = Debes estar dentro de la zona de inicio para usar este comando. 
+MSG_SPEED = Debes permanecer quieto para usar este comando.
 
 [fr]
 
-MSG_NOT_ALIVE = &x01Vous devez être en vie pour utiliser cette commande.
 MSG_USED = &x01Vous devez utiliser la commande&x06 /reset&x01 pour utiliser à nouveau&x06 /save.
+MSG_NOT_ALIVE = &x01Vous devez être en vie pour utiliser cette commande.
+MSG_OUTSIDE_ZONE = Vous devez être à l'intérieur de la zone de départ pour utiliser cette commande.
+MSG_SPEED = Vous devez rester immobile pour utiliser cette commande.
 
 [ru]
 
-MSG_NOT_ALIVE = &x01Вы должны быть живым, чтобы использовать эту команду.
 MSG_USED = &x01Вам нужно использовать команду&x06 /reset&x01, чтобы снова использовать&x06 /save.
+MSG_NOT_ALIVE = &x01Вы должны быть живым, чтобы использовать эту команду.
+MSG_OUTSIDE_ZONE = Вы должны находиться внутри зоны старта, чтобы использовать эту команду.
+MSG_SPEED = Вы должны оставаться неподвижными, чтобы использовать эту команду.
 
 [pl]
 
-MSG_NOT_ALIVE = &x01Musisz być żywy, aby użyć tego polecenia.
 MSG_USED = &x01Musisz użyć polecenia&x06 /reset&x01, aby ponownie użyć&x06 /save.
+MSG_NOT_ALIVE = &x01Musisz być żywy, aby użyć tego polecenia.
+MSG_OUTSIDE_ZONE = Musisz być wewnątrz strefy startowej, aby użyć tego polecenia.
+MSG_SPEED = Musisz pozostać nieruchomo, aby użyć tego polecenia.
 
 [bg]
 
-MSG_NOT_ALIVE = &x01Трябва да сте живи, за да използвате тази команда.
 MSG_USED = &x01Трябва да използвате командата&x06 /reset&x01, за да използвате отново&x06 /save.
+MSG_NOT_ALIVE = &x01Трябва да сте живи, за да използвате тази команда.
+MSG_OUTSIDE_ZONE = Трябва да сте в зоната на старта, за да използвате тази команда.
+MSG_SPEED = Трябва да останете неподвижни, за да използвате тази команда.
 
 [tr]
 
-MSG_NOT_ALIVE = &x01Bu komutu kullanmak için yaşamalısınız.
 MSG_USED = &x06/save&x01 komutunu tekrar kullanmak için&x06 /reset&x01 komutunu kullanmanız gerekiyor.
+MSG_NOT_ALIVE = &x01Bu komutu kullanmak için yaşamalısınız.
+MSG_OUTSIDE_ZONE = Bu komutu kullanabilmek için başlangıç bölgesinde olmalısınız.
+MSG_SPEED = Bu komutu kullanabilmek için hareketsiz kalmalısınız.
 
 [de]
 
 MSG_NOT_ALIVE = &x01Du musst am Leben sein, um diesen Befehl zu verwenden.
 MSG_USED = &x01Du musst den Befehl &x06/reset&x01 verwenden, um &x06/save&x01 erneut zu verwenden.
+MSG_OUTSIDE_ZONE = Du musst dich in der Startzone befinden, um diesen Befehl zu verwenden.
+MSG_SPEED = Du musst stillstehen, um diesen Befehl zu verwenden.
