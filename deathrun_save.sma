@@ -79,6 +79,8 @@ public player_killed(id, attacker) {
 	if(!is_deathrun_enabled()) return HAM_IGNORED;
 
 	if(!is_user_connected(attacker)) return HAM_IGNORED;
+	
+	if(attacker == id) return HAM_IGNORED;
 
 	start_position[attacker][0] = 0;
 	used[attacker] = false;
