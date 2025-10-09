@@ -30,7 +30,7 @@ public plugin_init()
 
 	register_logevent("event_round_start", 2, "1=Round_Start");
 
-	RegisterHam(Ham_Spawn, "player", "player_spawn");
+	//RegisterHam(Ham_Spawn, "player", "player_spawn");
 	RegisterHam(Ham_Killed, "player", "player_killed", 1);
 
 	//Chat prefix
@@ -87,6 +87,7 @@ public player_killed(id, attacker) {
 
 	return HAM_IGNORED;
 }
+
 
 #if defined timer_player_category_changed
 public timer_player_category_changed(id){
